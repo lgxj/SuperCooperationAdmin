@@ -1,24 +1,10 @@
-import request from '@/utils/request'
+import { post, get } from '@/api/api'
 
-export function login(data) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    data
-  })
-}
+// 登录
+export const login = data => post('user/login', data)
 
-export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
+// 获取用户信息
+export const getInfo = () => get('user/info')
 
-export function logout() {
-  return request({
-    url: '/user/logout',
-    method: 'post'
-  })
-}
+// 登出
+export const logout = () => post('/user/logout')

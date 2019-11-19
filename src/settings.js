@@ -1,11 +1,14 @@
 module.exports = {
-  title: 'Vue Element Admin',
+  title: '全民在帮管理后台',
+
+  appId: 'app551ac64a61ebaadbf645274d334f9153',
+  appSecret: 'a025ea3ff65610c8a95b6e7cfde500da',
 
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */
-  showSettings: true,
+  showSettings: false,
 
   /**
    * @type {boolean} true | false
@@ -17,13 +20,13 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false,
+  sidebarLogo: true,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

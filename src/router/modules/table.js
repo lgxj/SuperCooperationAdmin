@@ -9,6 +9,7 @@ const tableRouter = {
   name: 'Table',
   meta: {
     title: 'Table',
+    roles: ['dev'],
     icon: 'table'
   },
   children: [
