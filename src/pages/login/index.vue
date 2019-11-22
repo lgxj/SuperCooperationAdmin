@@ -73,7 +73,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -135,7 +135,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
+          this.$store.dispatch('admin/login', this.loginForm)
             .then(() => {
               console.log({ path: this.redirect || '/', query: this.otherQuery })
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })

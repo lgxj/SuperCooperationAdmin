@@ -5,6 +5,11 @@ module.exports = {
   appSecret: 'a025ea3ff65610c8a95b6e7cfde500da',
 
   /**
+   * 上传图片处理地址
+   */
+  uploadImgApiPath: process.env.VUE_APP_BASE_API + '/upload/image',
+
+  /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */

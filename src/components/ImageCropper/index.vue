@@ -141,6 +141,8 @@ import language from './utils/language.js'
 import mimes from './utils/mimes.js'
 import data2blob from './utils/data2blob.js'
 import effectRipple from './utils/effectRipple.js'
+import { uploadImgApiPath } from '../../settings'
+
 export default {
   props: {
     // 域，上传文件name，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
@@ -161,7 +163,7 @@ export default {
     // 上传地址
     url: {
       type: String,
-      default: ''
+      default: uploadImgApiPath
     },
     // 其他要上传文件附带的数据，对象格式
     params: {

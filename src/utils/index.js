@@ -3,6 +3,23 @@
  */
 
 /**
+ * 数组替换指定元素
+ * @param arr
+ * @param keyName
+ * @param obj
+ */
+export const arrayReplace = (arr, keyName, obj) => {
+  for (const item of arr) {
+    if (item[keyName] === obj[keyName]) {
+      const index = arr.indexOf(item)
+      arr.splice(index, 1, obj)
+      break
+    }
+  }
+  return arr
+}
+
+/**
  * Parse the time to string
  * @param {(Object|string|number)} time
  * @param {string} cFormat

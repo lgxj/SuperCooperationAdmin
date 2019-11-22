@@ -15,7 +15,11 @@ const makeParamSource = params => {
   const keys = Object.keys(params || {}).sort()
   const arr = []
   keys.forEach(val => {
-    arr.push(val + '=' + params[val])
+    let param = params[val]
+    if (typeof param === 'object') {
+      param = JSON.stringify(param)
+    }
+    arr.push(val + '=' + param)
   })
   return encodeURIComponent(arr.join(('&')))
 }
@@ -43,7 +47,9 @@ service.interceptors.request.use(
 
     config.headers[ 'SC-API-APP'] = settings.appId
 
-    const signSource = makeParamSource(config.data)
+    let data = config.data || {}
+    data = Object.assign(data, config.params)
+    const signSource = makeParamSource(data)
     config.headers[ 'SC-API-SIGNATURE'] = sign(signSource)
 
     if (store.getters.token) {
@@ -81,7 +87,7 @@ service.interceptors.response.use(
       Message({
         message: res.message || 'Error',
         type: 'error',
-        duration: 5 * 1000
+        duration: 3 * 1000
       })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
@@ -92,7 +98,7 @@ service.interceptors.response.use(
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
+          store.dispatch('admin/resetToken').then(() => {
             location.reload()
           })
         })
@@ -107,7 +113,7 @@ service.interceptors.response.use(
     Message({
       message: error.message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 3 * 1000
     })
     return Promise.reject(error)
   }
