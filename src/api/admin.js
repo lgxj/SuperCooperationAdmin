@@ -22,7 +22,10 @@ export const edit = ({ admin_id, username, name, avatar, roleIds }) => put('admi
 export const resetPwd = ({ admin_id, password }) => put('admin/reset_pwd', { admin_id, password })
 
 // 冻结
-export const frozen = (id) => put('admin/frozen', { id })
+export const frozen = (admin_id) => put('admin/frozen', { admin_id })
 
 // 解冻
-export const unFrozen = (id) => put('admin/unFrozen', { id })
+export const unFrozen = (admin_id) => put('admin/unFrozen', { admin_id })
+
+// 日志列表
+export const getLogList = (page, limit, filter) => post('admin/logs', { page, limit, filter })

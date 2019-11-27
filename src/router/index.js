@@ -109,17 +109,35 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       title: '权限',
-      icon: 'lock',
-      roles: ['admin'] // you can set roles in root nav
+      icon: 'lock'
     },
     children: [
       {
-        path: 'role',
-        component: () => import('@/pages/permission/role'),
-        name: 'PermissionRole',
+        path: 'api-group',
+        component: () => import('@/pages/permission/api-group'),
+        name: 'PermissionApiGroup',
         meta: {
-          title: '角色',
-          roles: ['admin']
+          title: '接口分组',
+          roles: ['dev']
+        }
+      },
+      {
+        path: 'api',
+        component: () => import('@/pages/permission/api'),
+        name: 'PermissionApiAll',
+        meta: {
+          title: '接口列表',
+          roles: ['dev']
+        }
+      },
+      {
+        path: 'api/:group_id/:name',
+        component: () => import('@/pages/permission/api'),
+        name: 'PermissionApi',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `接口列表：${route.params['name']}`,
+          roles: ['dev']
         }
       },
       {
@@ -128,16 +146,15 @@ export const asyncRoutes = [
         name: 'PermissionResource',
         meta: {
           title: '资源',
-          roles: ['admin']
+          roles: ['dev']
         }
       },
       {
-        path: 'api',
-        component: () => import('@/pages/permission/api'),
-        name: 'PermissionApi',
+        path: 'role',
+        component: () => import('@/pages/permission/role'),
+        name: 'PermissionRole',
         meta: {
-          title: '后台接口',
-          roles: ['admin']
+          title: '角色'
         }
       },
       {
@@ -145,8 +162,24 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/admin'),
         name: 'PermissionAdmin',
         meta: {
-          title: '管理员',
-          roles: ['admin']
+          title: '管理员'
+        }
+      },
+      {
+        path: 'admin-log',
+        component: () => import('@/pages/permission/admin-log'),
+        name: 'PermissionAdminLogAll',
+        meta: {
+          title: '操作日志'
+        }
+      },
+      {
+        path: 'admin-log/:id/:name',
+        component: () => import('@/pages/permission/admin-log'),
+        name: 'PermissionAdminLog',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `操作日志：${route.params['name']}`
         }
       }
     ]

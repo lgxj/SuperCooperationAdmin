@@ -24,7 +24,7 @@ export const put = (url, data) => {
   })
 }
 
-export const del = (url, data) => {
+export const delRequest = (url, data) => {
   return request({
     url: url,
     method: 'delete',

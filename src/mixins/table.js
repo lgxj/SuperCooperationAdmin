@@ -23,7 +23,16 @@ export default {
       }
     }
   },
+  created() {
+    this.init()
+  },
   methods: {
+    init() {
+      this.loadData()
+    },
+    loadData() {
+      // ...
+    },
     // 加载数据完成
     loadedData(res) {
       this.list = res.data.list
@@ -38,6 +47,11 @@ export default {
     },
     // 搜索
     handleSearch() {
+      this.tableLoading = true
+      this.page = 1
+      this.loadData()
+    },
+    handleRefresh() {
       this.tableLoading = true
       this.page = 1
       this.loadData()

@@ -77,6 +77,14 @@ div:focus {
   padding-left: 10px;
 }
 
+.ml-10 {
+  margin-left: 10px;
+}
+
+.w100 {
+  width: 100%;
+}
+
 .block {
   display: block;
 }
@@ -192,4 +200,9 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
+}
+
+.pagination-container {
+  margin-top: 0;
+  text-align: right;
 }

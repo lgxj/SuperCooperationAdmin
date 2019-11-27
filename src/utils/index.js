@@ -7,12 +7,37 @@
  * @param arr
  * @param keyName
  * @param obj
+ * @param add 未匹配到时，是否插入数组
  */
-export const arrayReplace = (arr, keyName, obj) => {
+export const arrayReplace = (arr, keyName, obj, add = false) => {
+  let index = false
   for (const item of arr) {
     if (item[keyName] === obj[keyName]) {
-      const index = arr.indexOf(item)
+      index = arr.indexOf(item)
+      console.log(index)
       arr.splice(index, 1, obj)
+      break
+    }
+  }
+  if (index === false && add) {
+    arr.unshift(obj)
+  }
+  return arr
+}
+
+/**
+ * 数组删除指定元素
+ * @param arr
+ * @param keyName
+ * @param obj
+ * @returns {*}
+ */
+export const arraySplice = (arr, keyName, obj) => {
+  let index = false
+  for (const item of arr) {
+    if (item[keyName] === obj[keyName]) {
+      index = arr.indexOf(item)
+      arr.splice(index, 1)
       break
     }
   }

@@ -47,12 +47,25 @@
           <div v-else>-</div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="260">
+      <el-table-column align="center" label="操作" min-width="340">
         <template slot-scope="{row}">
-          <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="warning" size="small" @click="handleResetPwd(row)">重置密码</el-button>
-          <el-button v-if="row.status" type="danger" size="small" @click="handleFrozen(row)">冻结</el-button>
-          <el-button v-else type="warning" size="small" @click="handleUnFrozen(row)">解冻</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="warning" size="mini" @click="handleResetPwd(row)">重置密码</el-button>
+          <el-button type="success" size="mini" @click="handleShowLog(row)">操作日志</el-button>
+          <el-popover
+            v-model="row.frozenPopover"
+            placement="top"
+            width="160"
+          >
+            <p v-if="row.status">您确定要冻结此管理员吗？</p>
+            <p v-else>您确定要解冻此管理员吗？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="hideFrozenPopover(row)">取消</el-button>
+              <el-button type="primary" size="mini" @click="handleFrozen(row)">确定</el-button>
+            </div>
+            <el-button v-if="row.status" slot="reference" type="danger" size="mini" class="ml-10">冻结</el-button>
+            <el-button v-else slot="reference" type="success" size="mini" class="ml-10">解冻</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -76,10 +89,10 @@
         <el-form-item v-if="dialogType !== 'reset_pwd'" label="角色" prop="roleIds">
           <el-select v-model="info.roleIds" multiple placeholder="请选择角色" style="width: 100%">
             <el-option
-              v-for="item in roles"
-              :key="item.role_id"
-              :label="item.name"
-              :value="item.role_id"
+              v-for="(item, index) in roles"
+              :key="index"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </el-form-item>
@@ -111,12 +124,13 @@
 <script>
 import table from '@/mixins/table'
 import { validateName, validatePwd, validateUsername } from '@/utils/validate'
-import { getList, add, edit, resetPwd } from '@/api/admin'
+import { getList, add, edit, resetPwd, frozen, unFrozen } from '@/api/admin'
+import { getDic as getRoleDic } from '@/api/role'
 import ImageCropper from '@/components/ImageCropper'
 import { arrayReplace } from '@/utils'
 
 export default {
-  name: 'Admin',
+  name: 'PermissionAdmin',
   components: { ImageCropper },
   mixins: [
     table
@@ -134,25 +148,8 @@ export default {
     return {
       status: ['冻结', '正常'],
       list: [],
-      info: {
-        username: '',
-        password: '',
-        repeat_password: '',
-        name: '',
-        status: 1,
-        avatar: '',
-        roleIds: []
-      },
-      roles: [{
-        role_id: 1,
-        name: '总管理员'
-      }, {
-        role_id: 2,
-        name: '账务'
-      }, {
-        role_id: 3,
-        name: '运营'
-      }],
+      info: {},
+      roles: [],
       dialogVisible: false,
       dialogType: '',
       rules: {
@@ -163,7 +160,9 @@ export default {
         roleIds: [{ required: true, message: '请选择角色', trigger: 'change' }]
       },
       imageCropperKey: 0,
-      imageCropperShow: false
+      imageCropperShow: false,
+      frozenVisible: [],
+      visible: false
     }
   },
   computed: {
@@ -183,7 +182,13 @@ export default {
   },
   methods: {
     init() {
+      this.loadRole()
       this.loadData()
+    },
+    loadRole() {
+      getRoleDic().then(res => {
+        this.roles = res.data
+      })
     },
     loadData() {
       getList(this.listQuery.page, this.listQuery.limit, JSON.stringify(this.search)).then(res => {
@@ -192,10 +197,8 @@ export default {
     },
     getRoleNames(ids) {
       const names = []
-      this.roles.map(item => {
-        if (ids.indexOf(item.role_id) >= 0) {
-          names.push(item.name)
-        }
+      ids.map(id => {
+        names.push(this.roles[id])
       })
       return names.join('、') || '-'
     },
@@ -223,7 +226,6 @@ export default {
       }
     },
     handleEdit(row) {
-      this.currentRow = row
       this.info = Object.assign({}, row) // copy obj
       this.dialogType = 'update'
       this.dialogVisible = true
@@ -232,18 +234,34 @@ export default {
       })
     },
     handleResetPwd(row) {
-      this.info = Object.assign({}, row) // copy obj
+      this.info = Object.assign({}, row, {
+        password: '',
+        repeat_password: ''
+      })
       this.dialogType = 'reset_pwd'
       this.dialogVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleFrozen() {
-
+    hideFrozenPopover(row) {
+      row.frozenPopover = false
     },
-    handleUnFrozen() {
-
+    // 冻结/解冻
+    handleFrozen(row) {
+      if (row.status) {
+        frozen(row.admin_id).then(res => {
+          this.$message.success('冻结成功')
+          row.status = Math.abs(row.status - 1)
+          this.hideFrozenPopover(row)
+        })
+      } else {
+        unFrozen(row.admin_id).then(res => {
+          this.$message.success('解冻成功')
+          row.status = Math.abs(row.status - 1)
+          this.hideFrozenPopover(row)
+        })
+      }
     },
     handleSave() {
       this.$refs['dataForm'].validate((valid) => {
@@ -251,7 +269,7 @@ export default {
           if (this.dialogType === 'create') {
             add(this.info).then(res => {
               this.info.admin_id = res.data.admin_id
-              this.list.unshift(this.info)
+              this.list.unshift(Object.assign({}, this.info))
               this.$message.success('添加成功')
               this.dialogVisible = false
             })
@@ -274,6 +292,9 @@ export default {
       this.imageCropperShow = false
       // this.imageCropperKey = this.imagecropperKey + 1
       this.info.avatar = resData.path
+    },
+    handleShowLog(row) {
+      this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: row.name }})
     }
   }
 }

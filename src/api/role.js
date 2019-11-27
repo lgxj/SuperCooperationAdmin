@@ -1,38 +1,19 @@
-import request from '@/utils/request'
+import { post, put, get, delRequest } from '@/api/api'
 
-export function getRoutes() {
-  return request({
-    url: '/routes',
-    method: 'get'
-  })
-}
+// 列表
+export const getList = (page, limit, filter) => post('role/list', { page, limit, filter })
 
-export function getRoles() {
-  return request({
-    url: '/roles',
-    method: 'get'
-  })
-}
+// 字典
+export const getDic = () => get('role/dic')
 
-export function addRole(data) {
-  return request({
-    url: '/role',
-    method: 'post',
-    data
-  })
-}
+// 添加
+export const add = ({ name, code, remark, resourceIds }) => post('role/add', { name, code, remark, resourceIds })
 
-export function updateRole(id, data) {
-  return request({
-    url: `/role/${id}`,
-    method: 'put',
-    data
-  })
-}
+// 编辑
+export const edit = ({ role_id, name, code, remark }) => put('role/edit', { role_id, name, code, remark })
 
-export function deleteRole(id) {
-  return request({
-    url: `/role/${id}`,
-    method: 'delete'
-  })
-}
+// 编辑权限
+export const editResource = ({ role_id, resourceIds }) => put('role/edit.resource', { role_id, resourceIds })
+
+// 删除
+export const del = (role_id) => delRequest('role/del', { role_id })

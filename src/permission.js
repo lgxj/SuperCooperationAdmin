@@ -15,6 +15,9 @@ router.beforeEach(async(to, from, next) => {
   NProgress.start()
 
   // set page title
+  if (to.meta.dynamicTitle && typeof to.meta.dynamicTitle === 'function') {
+    to.meta.title = to.meta.dynamicTitle(to)
+  }
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
