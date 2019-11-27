@@ -191,7 +191,7 @@ export default {
       this.loadData()
     },
     loadTree() {
-      getTree(0, true).then(res => {
+      getTree(0, 1).then(res => {
         this.resources = this.formatTreeData(res.data)
       })
     },
@@ -211,12 +211,12 @@ export default {
       })
     },
     loadData() {
-      getTree(0, false).then(res => {
+      getTree(0, 0).then(res => {
         this.list = this.formatData(res.data)
       })
     },
     loadChild(tree, treeNode, resolve) {
-      getTree(tree.resource_id, false).then(res => {
+      getTree(tree.resource_id, 0).then(res => {
         const pid = tree.resource_id
         this.maps.set(pid, { tree, treeNode, resolve })
         resolve(this.formatData(res.data))
