@@ -161,7 +161,7 @@ export default {
       this.loadData()
     },
     loadResource() {
-      getResources(0, true).then(res => {
+      getResources(0, 1).then(res => {
         this.resources = res.data
       })
     },
