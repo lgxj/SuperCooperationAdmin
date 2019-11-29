@@ -5,7 +5,12 @@
         <el-form ref="dataForm" :model="info" :rules="rules" label-width="120px" label-position="left">
           <el-form-item label="分类" prop="category_id">
             <el-select v-model="info.category_id" placeholder="请选择分类" clearable>
-              <el-option v-for="(item, index) in category" :key="index" :label="item.name" :value="item.article_category_id" />
+              <el-option
+                v-for="(item, index) in category"
+                :key="index"
+                :label="item.name"
+                :value="item.article_category_id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="标题" prop="title">
@@ -74,15 +79,18 @@
     </div>
 
     <div class="flex-none ml-10">
-      <phone :title="info.title || '文章详情'">
-        <detail v-if="insideContent" :info="info" :fields="currentCategory.detail_fields" :category="currentCategory" />
-      </phone>
+      <sticky :sticky-top="104">
+        <phone :title="info.title || '文章详情'">
+          <detail v-if="insideContent" :info="info" :fields="currentCategory.detail_fields" :category="currentCategory" />
+        </phone>
+      </sticky>
     </div>
   </div>
 </template>
 
 <script>
 import Tinymce from '@/components/Tinymce'
+import Sticky from '@/components/Sticky'
 import Phone from '@/components/Phone'
 import MyUpload from '@/components/MyUpload'
 import Detail from '@/pages/content/components/Detail'
@@ -97,7 +105,7 @@ const contentType = {
 
 export default {
   name: 'ContentArticleDetail',
-  components: { Phone, Detail, Tinymce, MyUpload },
+  components: { Phone, Detail, Tinymce, MyUpload, Sticky },
   data() {
     return {
       id: '',
@@ -170,15 +178,17 @@ export default {
       getDetail(this.id).then(res => {
         res.data.content_type = String(res.data.content_type)
         this.info = res.data
-        this.cover = this.info.cover ? [{
-          url: this.info.cover,
-          name: ''
-        }] : []
+        this.cover = this.info.cover ? [
+          {
+            url: this.info.cover,
+            name: ''
+          }] : []
         this.photos = this.info.photos
       })
     },
     isShowField(field) {
-      return this.currentCategory ? this.currentCategory.list_fields.indexOf(field) >= 0 || this.currentCategory.detail_fields.indexOf(field) >= 0 : false
+      return this.currentCategory ? this.currentCategory.list_fields.indexOf(field) >= 0 ||
+        this.currentCategory.detail_fields.indexOf(field) >= 0 : false
     },
     handleRemoveTag(tag) {
       this.info.tag.splice(this.info.tag.indexOf(tag), 1)
@@ -248,6 +258,7 @@ export default {
   .el-tag + .el-tag {
     margin-left: 10px;
   }
+
   .button-new-tag {
     margin-left: 10px;
     height: 32px;
@@ -255,6 +266,7 @@ export default {
     padding-top: 0;
     padding-bottom: 0;
   }
+
   .input-new-tag {
     width: 90px;
     margin-left: 10px;
