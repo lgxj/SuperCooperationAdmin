@@ -83,38 +83,6 @@ import { arrayReplace } from '@/utils'
 import { del, add, edit, editResource, getList } from '@/api/role'
 import { getTree as getResources } from '@/api/resource'
 
-const tmpResources = [{
-  value: 'zhinan',
-  label: '指南',
-  children: [{
-    value: '10',
-    label: '设计原则',
-    children: [{
-      value: '1',
-      label: '一致'
-    }, {
-      value: '2',
-      label: '反馈'
-    }, {
-      value: '3',
-      label: '效率'
-    }, {
-      value: '4',
-      label: '可控'
-    }]
-  }, {
-    value: 'daohang',
-    label: '导航',
-    children: [{
-      value: '5',
-      label: '侧向导航'
-    }, {
-      value: '6',
-      label: '顶部导航'
-    }]
-  }]
-}]
-
 export default {
   name: 'PermissionRole',
   mixins: [
@@ -125,7 +93,7 @@ export default {
       dialogVisible: false,
       dialogType: '',
       roles: [],
-      resources: tmpResources,
+      resources: [],
       list: [],
       checkStrictly: false,
       defaultProps: {

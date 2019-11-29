@@ -36,3 +36,10 @@ export const globalResourceType = {
   2: '页面',
   3: '操作'
 }
+
+export const listType = {
+  1: '下图',
+  2: '上图',
+  3: '左图',
+  4: '右图'
+}

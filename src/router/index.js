@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { wordLimit } from '@/utils'
 
 Vue.use(Router)
 
@@ -108,7 +109,7 @@ export const asyncRoutes = [
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
-      title: '权限',
+      title: '权限管理',
       icon: 'lock'
     },
     children: [
@@ -180,6 +181,72 @@ export const asyncRoutes = [
         hidden: true,
         meta: {
           dynamicTitle: route => `操作日志：${route.params['name']}`
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/content',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true, // will always show the root menu
+    name: 'Content',
+    meta: {
+      title: '内容管理',
+      icon: 'list'
+    },
+    children: [
+      {
+        path: 'article-category',
+        component: () => import('@/pages/content/article-category'),
+        name: 'ContentArticleCategory',
+        meta: {
+          title: '文章分类'
+        }
+      },
+      {
+        path: 'article-category-add',
+        component: () => import('@/pages/content/article-category-detail'),
+        name: 'ContentArticleCategoryAdd',
+        hidden: true,
+        meta: {
+          title: '添加文章分类'
+        }
+      },
+      {
+        path: 'article-category/:id/:name',
+        component: () => import('@/pages/content/article-category-detail'),
+        name: 'ContentArticleCategoryEdit',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `编辑文章分类：${route.params['name']}`
+        }
+      },
+      {
+        path: 'article',
+        component: () => import('@/pages/content/article'),
+        name: 'ContentArticle',
+        meta: {
+          title: '文章列表'
+        }
+      },
+      {
+        path: 'article/add',
+        component: () => import('@/pages/content/article-detail'),
+        name: 'ContentArticleAdd',
+        hidden: true,
+        meta: {
+          title: '添加文章'
+        }
+      },
+      {
+        path: 'article/:id/:name',
+        component: () => import('@/pages/content/article-detail'),
+        name: 'ContentArticleEdit',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `编辑文章：${wordLimit(route.params['name'])}`
         }
       }
     ]

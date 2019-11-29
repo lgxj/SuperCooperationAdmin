@@ -2,6 +2,65 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
+import Base64 from 'crypto-js/enc-base64'
+import hmacSHA1 from 'crypto-js/hmac-sha1'
+import settings from '@/settings'
+
+/**
+ * 拼接签名字符串
+ * @param params
+ * @returns {string}
+ */
+export const makeParamSource = params => {
+  const keys = Object.keys(params || {}).sort()
+  const arr = []
+  keys.forEach(val => {
+    let param = params[val]
+    if (typeof param === 'object') {
+      param = JSON.stringify(param)
+    }
+    arr.push(val + '=' + param)
+  })
+  return encodeURIComponent(arr.join(('&')))
+}
+
+/**
+ * 签名
+ * @param source
+ * @returns {*}
+ */
+export const sign = source => {
+  return Base64.stringify(hmacSHA1(source, settings.appSecret))
+}
+
+/**
+ * 字符串截取显示
+ * @param str
+ * @param len
+ * @returns {string|*}
+ */
+export const wordLimit = (str, len = 6) => {
+  if (!str) return str
+  if (str.length < len) return str
+  return str.substr(0, len - 2) + '...'
+}
+
+/**
+ * 从二维数据中查询指定值
+ * @param arr
+ * @param keyName
+ * @param val
+ * @returns {boolean}
+ */
+export const findArrayByItem = (arr, keyName, val) => {
+  for (const item of arr) {
+    if (item[keyName] === val) {
+      return item
+    }
+  }
+  return false
+}
+
 /**
  * 数组替换指定元素
  * @param arr
@@ -14,7 +73,6 @@ export const arrayReplace = (arr, keyName, obj, add = false) => {
   for (const item of arr) {
     if (item[keyName] === obj[keyName]) {
       index = arr.indexOf(item)
-      console.log(index)
       arr.splice(index, 1, obj)
       break
     }

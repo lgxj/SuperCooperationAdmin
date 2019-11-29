@@ -1,37 +1,8 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
-import Base64 from 'crypto-js/enc-base64'
-import hmacSHA1 from 'crypto-js/hmac-sha1'
 import settings from '@/settings'
-
-/**
- * 拼接签名字符串
- * @param params
- * @returns {string}
- */
-const makeParamSource = params => {
-  const keys = Object.keys(params || {}).sort()
-  const arr = []
-  keys.forEach(val => {
-    let param = params[val]
-    if (typeof param === 'object') {
-      param = JSON.stringify(param)
-    }
-    arr.push(val + '=' + param)
-  })
-  return encodeURIComponent(arr.join(('&')))
-}
-
-/**
- * 签名
- * @param source
- * @returns {*}
- */
-const sign = source => {
-  return Base64.stringify(hmacSHA1(source, settings.appSecret))
-}
+import { makeParamSource, sign } from '@/utils'
 
 // create an axios instance
 const service = axios.create({
@@ -56,7 +27,7 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['SC-ACCESS-TOKEN'] = getToken()
+      config.headers['SC-ACCESS-TOKEN'] = store.getters.token
     }
     return config
   },

@@ -10,6 +10,11 @@ module.exports = {
   uploadImgApiPath: process.env.VUE_APP_BASE_API + '/upload/image',
 
   /**
+   * 图片域名
+   */
+  uploadImgDomain: process.env.VUE_APP_BASE_API,
+
+  /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */

@@ -22,6 +22,11 @@ html {
   box-sizing: border-box;
 }
 
+ul, li {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
   height: 100%;
 }
@@ -81,6 +86,10 @@ div:focus {
   margin-left: 10px;
 }
 
+.mr-10 {
+  margin-right: 10px;
+}
+
 .w100 {
   width: 100%;
 }
@@ -105,6 +114,18 @@ div:focus {
     content: " ";
     clear: both;
     height: 0;
+  }
+}
+
+.flex {
+  display: flex;
+
+  .flex-auto {
+    flex: auto;
+  }
+
+  .flex-none {
+    flex: none;
   }
 }
 

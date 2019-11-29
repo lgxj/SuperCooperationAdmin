@@ -1,10 +1,11 @@
 <template>
   <div class="upload-container">
     <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">
-      upload
+      上传图片
     </el-button>
-    <el-dialog :visible.sync="dialogVisible">
-      <el-upload
+    <el-dialog title="图片上传" :visible.sync="dialogVisible">
+      <!--<el-upload
+        name="image"
         :multiple="true"
         :file-list="fileList"
         :show-file-list="true"
@@ -12,18 +13,18 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        :action="uploadImgApiPath"
+        :headers="headers"
         list-type="picture-card"
       >
-        <el-button size="small" type="primary">
-          Click upload
-        </el-button>
-      </el-upload>
+        <i class="el-icon-plus"></i>
+      </el-upload>-->
+      <my-upload :multiple="true" :max="9" @change="handleImgChange" />
       <el-button @click="dialogVisible = false">
-        Cancel
+        取消
       </el-button>
       <el-button type="primary" @click="handleSubmit">
-        Confirm
+        确定
       </el-button>
     </el-dialog>
   </div>
@@ -32,8 +33,13 @@
 <script>
 // import { getToken } from 'api/qiniu'
 
+import { uploadImgApiPath, appId } from '@/settings'
+import { makeParamSource, sign } from '@/utils'
+import MyUpload from '@/components/MyUpload'
+
 export default {
   name: 'EditorSlideUpload',
+  components: { MyUpload },
   props: {
     color: {
       type: String,
@@ -44,17 +50,33 @@ export default {
     return {
       dialogVisible: false,
       listObj: {},
-      fileList: []
+      fileList: [],
+      uploadImgApiPath
+    }
+  },
+  computed: {
+    headers() {
+      const headers = {}
+      headers[ 'SC-API-APP'] = appId
+      const signSource = makeParamSource()
+      headers[ 'SC-API-SIGNATURE'] = sign(signSource)
+      if (this.$store.getters.token) {
+        headers['SC-ACCESS-TOKEN'] = this.$store.getters.token
+      }
+      return headers
     }
   },
   methods: {
+    handleImgChange(e) {
+      this.listObj = Object.values(e)
+    },
     checkAllSuccess() {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
       const arr = Object.keys(this.listObj).map(v => this.listObj[v])
       if (!this.checkAllSuccess()) {
-        this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
+        this.$message('请等待所有图片成功上载。如果有网络问题，请刷新页面并重新上传！')
         return
       }
       this.$emit('successCBK', arr)
@@ -102,10 +124,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.editor-slide-upload {
-  margin-bottom: 20px;
-  /deep/ .el-upload--picture-card {
-    width: 100%;
-  }
+</style>
+
+<style>
+.editor-slide-upload .el-upload {
+   width: 148px !important;
+   margin: 0 8px 8px 0;
 }
 </style>

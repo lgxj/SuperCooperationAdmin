@@ -9,7 +9,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">新建接口</el-button>
     </div>
 
-    <el-table :data="listSort" style="width: 100%;margin-top:30px;" border>
+    <el-table v-loading="tableLoading" :data="listSort" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="所属分组" min-width="150">
         <template slot-scope="{row}">
           {{ apiGroup[row.group_id] || '' }}
