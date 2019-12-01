@@ -128,7 +128,8 @@ export default {
         content_type: [{ required: true, message: '请选择内容类型', trigger: 'change' }],
         author: [{ required: true, message: '请输入作者', trigger: 'change' }],
         summary: [{ required: true, message: '请输入摘要', trigger: 'change' }],
-        content: [{ required: true, message: '请输入内容', trigger: 'change' }]
+        content: [{ required: true, message: '请输入内容', trigger: 'change' }],
+        link: [{ required: true, message: '请输入外部链接', trigger: 'change' }]
       },
       contentType,
       category: [],

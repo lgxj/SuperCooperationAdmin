@@ -4,7 +4,7 @@
 
 import Base64 from 'crypto-js/enc-base64'
 import hmacSHA1 from 'crypto-js/hmac-sha1'
-import settings from '@/settings'
+import settings from '../settings'
 
 /**
  * 拼接签名字符串
