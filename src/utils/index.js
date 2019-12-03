@@ -34,7 +34,8 @@ export const makeParamSource = params => {
     if (typeof param === 'object') {
       param = JSON.stringify(param)
     }
-    arr.push(val + '=' + (String(param).trim()))
+    param = String(param).trim()
+    arr.push(val + '=' + param)
   })
   return encodeURIComponent(arr.join(('&')))
 }
