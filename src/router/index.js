@@ -252,6 +252,50 @@ export const asyncRoutes = [
     ]
   },
 
+  {
+    path: '/pool',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true, // will always show the root menu
+    name: 'Pool',
+    meta: {
+      title: '系统管理',
+      icon: 'list'
+    },
+    children: [
+      {
+        path: 'config',
+        component: () => import('@/pages/pool/config'),
+        name: 'PoolConfig',
+        meta: {
+          title: '配置'
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true, // will always show the root menu
+    name: 'User',
+    meta: {
+      title: '用户管理',
+      icon: 'list'
+    },
+    children: [
+      {
+        path: 'feedback',
+        component: () => import('@/pages/user/feedback'),
+        name: 'UserFeedback',
+        meta: {
+          title: '反馈'
+        }
+      }
+    ]
+  },
+
   ...devRouter,
 
   // 404 page must be placed at the end !!!

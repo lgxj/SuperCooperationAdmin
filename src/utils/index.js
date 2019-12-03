@@ -7,6 +7,21 @@ import hmacSHA1 from 'crypto-js/hmac-sha1'
 import settings from '../settings'
 
 /**
+ * 图片全路径
+ * @param path
+ * @returns {string|*}
+ */
+export const getImgFullPath = path => {
+  if (path.indexOf('http') === 0) {
+    return path
+  }
+  if (!path) {
+    return ''
+  }
+  return settings.uploadImgDomain + '/' + path
+}
+
+/**
  * 拼接签名字符串
  * @param params
  * @returns {string}
@@ -19,7 +34,7 @@ export const makeParamSource = params => {
     if (typeof param === 'object') {
       param = JSON.stringify(param)
     }
-    arr.push(val + '=' + param)
+    arr.push(val + '=' + (String(param).trim()))
   })
   return encodeURIComponent(arr.join(('&')))
 }
