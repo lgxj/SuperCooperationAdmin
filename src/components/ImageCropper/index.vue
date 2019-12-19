@@ -800,6 +800,7 @@ export default {
         .then(resData => {
           this.loading = 2
           this.$emit('crop-upload-success', resData.data)
+          this.off()
         })
         .catch(err => {
           if (this.value) {

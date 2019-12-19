@@ -1,6 +1,8 @@
 import { login, logout, getInfo } from '@/api/admin'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getLoginParams as getIMLoginParams } from '@/api/message/im'
 import router, { resetRouter } from '@/router'
+import tim from '../../utils/im'
 
 const state = {
   token: getToken(),
@@ -71,6 +73,12 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
         commit('SET_INTRODUCTION', introduction)
+
+        // 登录IM
+        getIMLoginParams().then(res => {
+          tim.login(res.data)
+        })
+
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -91,6 +99,8 @@ const actions = {
         // reset visited views and cached views
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true })
+
+        tim.logout()
 
         resolve()
       }).catch(error => {

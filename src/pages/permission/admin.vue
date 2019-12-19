@@ -52,6 +52,7 @@
           <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
           <el-button type="warning" size="mini" @click="handleResetPwd(row)">重置密码</el-button>
           <el-button type="success" size="mini" @click="handleShowLog(row)">操作日志</el-button>
+          <el-button type="success" size="mini" @click="handleSendMessage(row)">发消息</el-button>
           <el-popover
             v-model="row.frozenPopover"
             placement="top"
@@ -92,7 +93,7 @@
               v-for="(item, index) in roles"
               :key="index"
               :label="item"
-              :value="item"
+              :value="index"
             />
           </el-select>
         </el-form-item>
@@ -227,6 +228,10 @@ export default {
     },
     handleEdit(row) {
       this.info = Object.assign({}, row) // copy obj
+      this.info.roleIds = this.info.roleIds.map(item => {
+        return String(item)
+      })
+      console.log(this.info)
       this.dialogType = 'update'
       this.dialogVisible = true
       this.$nextTick(() => {
@@ -291,10 +296,13 @@ export default {
     cropperSuccess(resData) {
       this.imageCropperShow = false
       // this.imageCropperKey = this.imagecropperKey + 1
-      this.info.avatar = resData.path
+      this.info.avatar = resData.fullPath
     },
     handleShowLog(row) {
       this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: row.name }})
+    },
+    handleSendMessage(row) {
+      this.$router.push({ name: 'MessageIM', query: { userID: 'admin-' + row.admin_id }})
     }
   }
 }

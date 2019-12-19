@@ -22,6 +22,10 @@ import * as filters from './filters' // global filters
 import permission from './directive/permission'
 import role from './directive/role'
 
+import tim from './utils/im'
+
+Vue.prototype.$tim = tim
+
 permission.install(Vue)
 role.install(Vue)
 

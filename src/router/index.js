@@ -89,9 +89,22 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/profile/index'),
+        component: () => import('@/pages/profile/index'),
         name: 'Profile',
         meta: { title: '账户资料', icon: 'user', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/message',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'im',
+        component: () => import('@/pages/message/im'),
+        name: 'MessageIM',
+        meta: { title: '消息中心', icon: 'message-solid' }
       }
     ]
   }

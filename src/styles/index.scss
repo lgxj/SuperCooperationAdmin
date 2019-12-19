@@ -74,12 +74,20 @@ div:focus {
   padding-right: 5px;
 }
 
+.pr-10 {
+  padding-right: 10px;
+}
+
 .pl-5 {
   padding-left: 5px;
 }
 
 .pl-10 {
   padding-left: 10px;
+}
+
+.pl-20 {
+  padding-left: 20px;
 }
 
 .mt-10 {
@@ -131,6 +139,36 @@ div:focus {
   .flex-none {
     flex: none;
   }
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-justify-right {
+  justify-content: right;
+}
+
+.flex-direction-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.text-line {
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.text-line-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box; //作为弹性伸缩盒子模型显示。
+  -webkit-box-orient: vertical; //设置伸缩盒子的子元素排列方式--从上到下垂直排列
+  -webkit-line-clamp: 2; //显示的行
+}
+
+.float-right {
+  float: right;
 }
 
 aside {

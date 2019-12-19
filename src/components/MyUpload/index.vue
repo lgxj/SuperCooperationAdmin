@@ -16,7 +16,9 @@
       :list-type="listType"
       :limit="max"
     >
-      <i class="el-icon-plus" />
+      <slot>
+        <i class="el-icon-plus" />
+      </slot>
     </el-upload>
 
     <el-dialog :visible.sync="dialogVisible">
@@ -56,6 +58,10 @@ export default {
     max: {
       type: Number,
       default: 1
+    },
+    beforeUploadAction: {
+      type: Function,
+      default: null
     }
   },
   data() {
@@ -110,6 +116,10 @@ export default {
       this.$emit('change', this.listObj)
     },
     beforeUpload(file) {
+      if (this.beforeUploadAction) {
+        this.beforeUploadAction(file)
+        return false
+      }
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
