@@ -127,7 +127,7 @@ export default {
 </style>
 
 <style>
-.editor-slide-upload .el-upload {
+  .upload-container .editor-slide-upload .el-upload {
    width: 148px !important;
    margin: 0 8px 8px 0;
 }
