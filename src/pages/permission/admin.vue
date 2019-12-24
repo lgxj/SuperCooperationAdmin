@@ -47,12 +47,12 @@
           <div v-else>-</div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="340">
+      <el-table-column align="center" label="操作" min-width="540">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="warning" size="mini" @click="handleResetPwd(row)">重置密码</el-button>
-          <el-button type="success" size="mini" @click="handleShowLog(row)">操作日志</el-button>
-          <el-button type="success" size="mini" @click="handleSendMessage(row)">发消息</el-button>
+          <el-button type="primary" plain size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="warning" plain size="mini" @click="handleResetPwd(row)">重置密码</el-button>
+          <el-button type="warning" plain size="mini" @click="handleBindUser(row)">绑定前台账号</el-button>
+          <el-button v-if="row.user_id" type="success" plain size="mini" @click="handleSendMessage(row)">发消息</el-button>
           <el-popover
             v-model="row.frozenPopover"
             placement="top"
@@ -64,9 +64,10 @@
               <el-button size="mini" type="text" @click="hideFrozenPopover(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleFrozen(row)">确定</el-button>
             </div>
-            <el-button v-if="row.status" slot="reference" type="danger" size="mini" class="ml-10">冻结</el-button>
-            <el-button v-else slot="reference" type="success" size="mini" class="ml-10">解冻</el-button>
+            <el-button v-if="row.status" slot="reference" type="danger" plain size="mini" class="ml-10">冻结</el-button>
+            <el-button v-else slot="reference" type="success" plain size="mini" class="ml-10">解冻</el-button>
           </el-popover>
+          <el-button type="info" plain size="mini" class="ml-10" @click="handleShowLog(row)">操作日志</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,7 +76,7 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" :close-on-click-modal="false">
       <el-form ref="dataForm" :rules="rules" :model="info" label-width="80px" label-position="left">
-        <el-form-item v-if="dialogType !== 'reset_pwd'" label="用户名" prop="username">
+        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="用户名" prop="username">
           <el-input v-model="info.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item v-if="dialogType === 'reset_pwd' || dialogType === 'create'" label="密码" prop="password">
@@ -84,10 +85,10 @@
         <el-form-item v-if="dialogType === 'reset_pwd' || dialogType === 'create'" label="确认密码" prop="repeat_password">
           <el-input v-model="info.repeat_password" type="password" placeholder="请确认密码" />
         </el-form-item>
-        <el-form-item v-if="dialogType !== 'reset_pwd'" label="姓名" prop="name">
+        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="姓名" prop="name">
           <el-input v-model="info.name" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item v-if="dialogType !== 'reset_pwd'" label="角色" prop="roleIds">
+        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="角色" prop="roleIds">
           <el-select v-model="info.roleIds" multiple placeholder="请选择角色" style="width: 100%">
             <el-option
               v-for="(item, index) in roles"
@@ -97,11 +98,14 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="dialogType !== 'reset_pwd'" label="头像" prop="name">
+        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="头像" prop="name">
           <el-image lazy :src="info.avatar" style="width: 70px; height: 70px" fit="cover" />
           <el-button type="primary" icon="el-icon-upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imageCropperShow=true">
             选择图片
           </el-button>
+        </el-form-item>
+        <el-form-item v-if="dialogType === 'bind-user'" label="用户名" prop="username">
+          <el-input v-model="info.user_name" placeholder="请输入前台用户名" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -125,7 +129,7 @@
 <script>
 import table from '@/mixins/table'
 import { validateName, validatePwd, validateUsername } from '@/utils/validate'
-import { getList, add, edit, resetPwd, frozen, unFrozen } from '@/api/admin'
+import { getList, add, edit, resetPwd, frozen, unFrozen, bindUser } from '@/api/admin'
 import { getDic as getRoleDic } from '@/api/role'
 import ImageCropper from '@/components/ImageCropper'
 import { arrayReplace } from '@/utils'
@@ -173,6 +177,8 @@ export default {
           return '编辑管理员'
         case 'reset_pwd':
           return '重置密码'
+        case 'bind-user':
+          return '绑定前台用户'
         default:
           return '添加管理员'
       }
@@ -231,7 +237,6 @@ export default {
       this.info.roleIds = this.info.roleIds.map(item => {
         return String(item)
       })
-      console.log(this.info)
       this.dialogType = 'update'
       this.dialogVisible = true
       this.$nextTick(() => {
@@ -251,6 +256,14 @@ export default {
     },
     hideFrozenPopover(row) {
       row.frozenPopover = false
+    },
+    handleBindUser(row) {
+      this.info = Object.assign({}, row) // copy obj
+      this.dialogType = 'bind-user'
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     // 冻结/解冻
     handleFrozen(row) {
@@ -289,6 +302,11 @@ export default {
               this.$message.success('重置密码成功')
               this.dialogVisible = false
             })
+          } else if (this.dialogType === 'bind-user') {
+            bindUser(this.info).then(res => {
+              this.$message.success(res.message)
+              this.dialogVisible = false
+            })
           }
         }
       })
@@ -302,7 +320,7 @@ export default {
       this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: row.name }})
     },
     handleSendMessage(row) {
-      this.$router.push({ name: 'MessageIM', query: { userID: 'admin-' + row.admin_id }})
+      this.$router.push({ name: 'MessageIM', query: { userID: 'user-' + row.user_id }})
     }
   }
 }

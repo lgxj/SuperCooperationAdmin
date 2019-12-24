@@ -273,7 +273,7 @@ export const asyncRoutes = [
     name: 'Pool',
     meta: {
       title: '系统管理',
-      icon: 'list'
+      icon: 'example'
     },
     children: [
       {
@@ -295,7 +295,7 @@ export const asyncRoutes = [
     name: 'User',
     meta: {
       title: '用户管理',
-      icon: 'list'
+      icon: 'peoples'
     },
     children: [
       {

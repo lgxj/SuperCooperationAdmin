@@ -14,7 +14,7 @@
               fit="cover"
             >
               <div slot="error" class="flex flex-align-center image-error" style="height: 100%">
-                <div class="flex-auto text-center">{{ item.userProfile.nick }}</div>
+                <div class="flex-auto text-center" style="font-size: 16px">{{ firstWord(item.userProfile.nick) }}</div>
               </div>
             </el-image>
           </el-badge>
@@ -81,10 +81,19 @@ export default {
       return formatTime(time)
     },
     toChat(item) {
-      this.$emit('toChat', {
-        conversationID: item.conversationID,
-        user: item.userProfile
+      this.$emit('toChat', item)
+    },
+    searchByUser(userId) {
+      let res = false
+      this.list.map(item => {
+        if (item.userProfile.userID === userId) {
+          res = item
+        }
       })
+      return res
+    },
+    firstWord(str) {
+      return str.substr(0, 1)
     }
   }
 }

@@ -2,6 +2,8 @@ import settings from '@/settings'
 import TIM from 'tim-js-sdk'
 import COS from 'cos-js-sdk-v5'
 import Store from '../store'
+import Router from '../router'
+import { Notification } from 'element-ui'
 
 // IM参数
 const options = {
@@ -24,6 +26,13 @@ tim.on(TIM.EVENT.SDK_READY, function(event) {
   // event.name - TIM.EVENT.SDK_READY
   tim.ready = true
   console.log('im ready')
+  tim.getConversationList().then(res => {
+    let unreadCount = 0
+    res.data.conversationList.map(item => {
+      unreadCount += item.unreadCount
+    })
+    Store.dispatch('msg/changeValue', { key: 'num', value: unreadCount })
+  })
 })
 
 tim.on(TIM.EVENT.MESSAGE_RECEIVED, function(event) {
@@ -31,7 +40,25 @@ tim.on(TIM.EVENT.MESSAGE_RECEIVED, function(event) {
   // event.name - TIM.EVENT.MESSAGE_RECEIVED
   // event.data - 存储 Message 对象的数组 - [Message]
   console.log('新消息', event.data)
-  Store.dispatch('msg/changeValue', { key: 'num', value: 1 })
+  Store.dispatch('msg/changeValue', { key: 'num', value: Store.state.msg.num + event.data.length })
+  // 当前不在聊天页，弹出新消息提示
+  if (Router.currentRoute.name !== 'MessageIM') {
+    const msg = event.data[0]
+    let message
+    if (msg.type === 'TIMTextElem') {
+      message = msg.payload.text
+    } else if (msg.type === 'TIMImageElem') {
+      message = '[图片]'
+    }
+    const note = Notification.info({
+      title: '新消息',
+      message: message,
+      onClick: () => {
+        Router.push({ name: 'MessageIM', query: { userID: msg.from }})
+        note.close()
+      }
+    })
+  }
 })
 
 tim.on(TIM.EVENT.CONVERSATION_LIST_UPDATED, function(event) {
@@ -153,7 +180,6 @@ const createMessage = (to, obj, type = 'text', conv = 1) => {
  */
 export const sendMessage = (to, obj, type = 'text', conv = 1) => {
   const msg = createMessage(to, obj, type, conv)
-  console.log(msg)
   return tim.sendMessage(msg)
 }
 

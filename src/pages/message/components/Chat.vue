@@ -16,7 +16,7 @@
                 fit="cover"
               >
                 <div slot="error" class="flex flex-align-center image-error" style="height: 100%">
-                  <div class="flex-auto text-center">{{ user.nick }}</div>
+                  <div class="flex-auto text-center" style="font-size: 16px">{{ firstWord(user.nick) }}</div>
                 </div>
               </el-image>
             </div>
@@ -69,7 +69,7 @@
                 fit="cover"
               >
                 <div slot="error" class="flex flex-align-center image-error" style="height: 100%">
-                  <div class="flex-auto text-center">{{ my.nick }}</div>
+                  <div class="flex-auto text-center" style="font-size: 16px">{{ firstWord(my.nick) }}</div>
                 </div>
               </el-image>
             </div>
@@ -126,13 +126,19 @@ export default {
       default() {
         return {}
       }
+    },
+    unreadCount: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
       nextReqMessageID: '', // 用于续拉，分页续拉时需传入该字段。
       isCompleted: true, // 表示是否已经拉完所有消息。
-      info: {},
+      info: {
+        text: ''
+      },
       list: [],
       my: {}
     }
@@ -144,18 +150,14 @@ export default {
       this.isCompleted = true
       if (val) {
         this.getMessageList()
-        this.$tim.setMessageRead({
-          conversationID: val
-        })
+        this.setMessageRead(val, this.unreadCount)
       }
     }
   },
   created() {
     if (this.conversationId) {
       this.getMessageList()
-      this.$tim.setMessageRead({
-        conversationID: this.conversationId
-      })
+      this.setMessageRead(this.conversationId, this.unreadCount)
     }
     // 当前用户信息
     this.my = {
@@ -164,16 +166,16 @@ export default {
     }
     // 新消息
     this.$tim.on(TIM.EVENT.MESSAGE_RECEIVED, event => {
+      let currentUser = false
       event.data.map(item => {
         if (item.from === this.user.userID) {
+          currentUser = true
           this.list.push(item)
-          setTimeout(_ => {
-            this.$tim.setMessageRead({
-              conversationID: this.conversationId
-            })
-          }, 2000)
         }
       })
+      if (currentUser) {
+        this.setMessageRead(this.conversationId, event.data.length)
+      }
       this.scrollToBottom()
     })
   },
@@ -181,6 +183,17 @@ export default {
     // 格式化时间
     formatTime(time) {
       return formatTime(time)
+    },
+    // 设置已读
+    setMessageRead(conversationId, readNum = 1) {
+      if (!readNum) return
+      setTimeout(_ => {
+        this.$tim.setMessageRead({
+          conversationID: conversationId
+        }).then(_ => {
+          this.$store.dispatch('msg/changeValue', { key: 'num', value: this.$store.state.msg.num - readNum })
+        })
+      }, 2000)
     },
     // 滚动到指定元素
     goAnchor(selector) {
@@ -212,7 +225,6 @@ export default {
       this.$tim.getMessageList(data).then(res => {
         const messageList = res.data.messageList // 消息列表
         this.list.splice(0, 0, ...messageList)
-        console.log(this.list)
         this.nextReqMessageID = res.data.nextReqMessageID // 用于续拉，分页续拉时需传入该字段
         this.isCompleted = res.data.isCompleted // 表示是否已经拉完所有消息
         if (!loadHistory) {
@@ -234,6 +246,7 @@ export default {
     // 发送
     onSubmit() {
       const text = this.info.text
+      if (String(text) === '') return
       sendMessage(this.user.userID, text).then(res => {
         this.list.push(res.data.message)
         this.scrollToBottom()
@@ -305,6 +318,9 @@ export default {
         }
       }
       return renderDom
+    },
+    firstWord(str) {
+      return str.substr(0, 1)
     }
   }
 }

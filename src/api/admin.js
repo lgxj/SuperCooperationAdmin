@@ -29,3 +29,6 @@ export const unFrozen = (admin_id) => put('admin/unFrozen', { admin_id })
 
 // 日志列表
 export const getLogList = (page, limit, filter) => post('admin/logs', { page, limit, filter })
+
+// 绑定前台用户
+export const bindUser = ({ admin_id, user_name }) => post('admin/bindUser', { admin_id, user_name })
