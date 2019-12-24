@@ -299,6 +299,14 @@ export const asyncRoutes = [
     },
     children: [
       {
+        path: 'list',
+        component: () => import('@/pages/user/list'),
+        name: 'UserList',
+        meta: {
+          title: '列表'
+        }
+      },
+      {
         path: 'feedback',
         component: () => import('@/pages/user/feedback'),
         name: 'UserFeedback',
