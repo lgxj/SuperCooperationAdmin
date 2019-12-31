@@ -9,7 +9,7 @@
         <div v-if="!isCompleted" class="btn-load-history" @click="getMessageList(true)">历史消息</div>
         <div v-for="(item, index) in list" :id="item.ID" :key="index" class="text item flex">
           <template v-if="item.flow === 'in'">
-            <div class="flex-none">
+            <div class="flex-0">
               <el-image
                 class="avatar"
                 :src="user.avatar"
@@ -22,11 +22,11 @@
             </div>
             <div class="flex-auto pl-10" style="min-width: 0">
               <div class="title">
-                <span class="name">{{ user.nick }}</span>
-                <span class="time pl-5">{{ formatTime(item.time) }}</span>
+                <!--<span class="name">{{ user.nick }}</span>-->
+                <span class="time">{{ formatTime(item.time) }}</span>
               </div>
               <div class="content flex">
-                <div class="desc flex-none flex">
+                <div class="desc flex-0 flex">
                   <div v-for="(subItem, idx) in parsePayload(item.payload, item.type)" :key="idx">
                     <div v-if="subItem.type === 'image'" class="msg-img-item">
                       <el-image
@@ -35,6 +35,13 @@
                         fit="cover"
                         :preview-src-list="[subItem.src]"
                       />
+                    </div>
+                    <div v-if="subItem.type === 'address'" class="msg-address">
+                      <div class="name">[地址] {{ subItem.data.name }}</div>
+                      <div class="address">{{ subItem.data.address }}</div>
+                      <div v-if="subItem.data.pic" class="map">
+                        <el-image class="map" :src="subItem.data.pic" fit="cover" />
+                      </div>
                     </div>
                     <div v-else v-html="subItem.text" />
                   </div>
@@ -57,12 +64,19 @@
                       fit="cover"
                       :preview-src-list="[subItem.src]"
                     />
+                    <div v-if="subItem.type === 'address'" class="msg-address" @click="toMap(subItem.data)">
+                      <div class="name">[地址] {{ subItem.data.name }}</div>
+                      <div class="address">{{ subItem.data.address }}</div>
+                      <div v-if="subItem.data.pic" class="map">
+                        <el-image class="map" :src="subItem.data.pic" fit="cover" />
+                      </div>
+                    </div>
                     <div v-else v-html="subItem.text" />
                   </div>
                 </div>
               </div>
             </div>
-            <div class="flex-none">
+            <div class="flex-0">
               <el-image
                 class="avatar"
                 :src="my.avatar"
@@ -83,12 +97,12 @@
             <div class="flex-auto">
               <el-input v-model="info.text" type="textarea" autosize placeholder="请输入内容" />
             </div>
-            <div class="flex-none pl-5">
+            <div class="flex-0 pl-5">
               <my-upload :show-file-list="false" :list-type="'text'" :before-upload-action="handleImageSelect" @change="handleImageSelect">
                 <i class="el-icon-picture-outline btn-img" />
               </my-upload>
             </div>
-            <div class="flex-none pl-5">
+            <div class="flex-0 pl-5">
               <el-button type="primary" size="small" @click="onSubmit">发送</el-button>
             </div>
           </div>
@@ -262,6 +276,10 @@ export default {
     parsePayload(payload, type) {
       if (type === 'TIMImageElem') {
         return [{ type: 'image', src: payload.imageInfoArray[0].imageUrl }]
+      } else if (type === 'TIMCustomElem') {
+        const subType = payload.description
+        const data = JSON.parse(payload.extension)
+        return [{ type: subType, data }]
       } else {
         return [{ type: 'text', text: this.formatText(payload.text) }]
       }
@@ -321,6 +339,9 @@ export default {
     },
     firstWord(str) {
       return str.substr(0, 1)
+    },
+    toMap(point) {
+
     }
   }
 }
@@ -371,6 +392,23 @@ export default {
     padding: 10px;
     color: #4A9FF9;
     cursor: pointer;
+  }
+
+  .msg-address {
+    max-width: 250px;
+  }
+  .msg-address .name {
+    padding-bottom: 5px;
+    font-size: 14px;
+    color: #333333;
+  }
+  .msg-address .address {
+    padding-bottom: 5px;
+    font-size: 12px;
+    color: #999999;
+  }
+  .msg-address .map {
+    height: 150px;
   }
 
   .msg-img {

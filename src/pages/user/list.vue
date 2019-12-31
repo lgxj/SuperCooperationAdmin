@@ -41,19 +41,21 @@
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="100">
+      <el-table-column align="center" label="操作" width="200">
         <template slot-scope="{row, $index}">
+          <el-button type="info" size="mini" plain @click="toIm(row)">发信息</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
             width="180"
+            class="ml-10"
           >
             <p>您确定要删除此反馈吗？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" size="mini">冻结</el-button>
+            <el-button slot="reference" type="danger" size="mini" plain>冻结</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -110,6 +112,10 @@ export default {
     // 显示认证信息
     showCertification() {
       this.$message.error('开发中...')
+    },
+    // 去发信息
+    toIm(row) {
+      this.$router.push({ name: 'MessageIM', query: { userID: 'user-' + row.user_id }})
     }
   }
 }
