@@ -314,7 +314,7 @@ export default {
     cropperSuccess(resData) {
       this.imageCropperShow = false
       // this.imageCropperKey = this.imagecropperKey + 1
-      this.info.avatar = resData.fullPath
+      this.info.avatar = resData.image
     },
     handleShowLog(row) {
       this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: row.name }})

@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: '全民在帮管理后台',
+      title: '全民帮帮管理后台',
       logo: logo
     }
   }
