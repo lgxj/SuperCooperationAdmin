@@ -84,6 +84,24 @@ export default {
       return headers
     }
   },
+  watch: {
+    fileList(val) {
+      this.listObj = val.map(item => {
+        return {
+          url: item.url,
+          path: item.path
+        }
+      })
+    }
+  },
+  created() {
+    this.listObj = this.fileList.map(item => {
+      return {
+        url: item.url,
+        path: item.path
+      }
+    })
+  },
   methods: {
     formatPath(list) {
       return list.map(item => {
@@ -96,24 +114,24 @@ export default {
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.data.fullPath
-          this.listObj[objKeyArr[i]].path = response.data.path
+          this.listObj[objKeyArr[i]].url = response.data.image
+          this.listObj[objKeyArr[i]].path = response.data.image
           this.listObj[objKeyArr[i]].name = file.name
           this.listObj[objKeyArr[i]].hasSuccess = true
         }
       }
       this.$emit('change', this.listObj)
     },
-    handleRemove(file) {
-      const uid = file.uid
-      const objKeyArr = Object.keys(this.listObj)
-      for (let i = 0, len = objKeyArr.length; i < len; i++) {
-        if (this.listObj[objKeyArr[i]].uid === uid) {
-          console.log('delete', objKeyArr[i])
-          delete this.listObj[objKeyArr[i]]
+    handleRemove(file, fileList) {
+      const list = fileList.filter(item => {
+        return item.status === 'success'
+      }).map(item => {
+        return {
+          url: item.url,
+          path: item.path
         }
-      }
-      this.$emit('change', this.listObj)
+      })
+      return this.$emit('change', list)
     },
     beforeUpload(file) {
       if (this.beforeUploadAction) {
