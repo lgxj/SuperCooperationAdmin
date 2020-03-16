@@ -53,10 +53,10 @@
           <el-form-item v-if="isShowField('cover')" label="封面图" prop="cover">
             <my-upload :file-list="cover" @change="handleCoverChange" />
           </el-form-item>
-          <el-form-item v-show="insideContent && isShowField('photos')" label="图集" prop="photos">
+          <el-form-item v-if="insideContent && isShowField('photos')" label="图集" prop="photos">
             <my-upload :multiple="true" :max="9" :file-list="photos" @change="handlePhotosChange" />
           </el-form-item>
-          <el-form-item v-show="isShowField('summary')" label="摘要" prop="summary">
+          <el-form-item v-if="isShowField('summary')" label="摘要" prop="summary">
             <el-input
               v-model="info.summary"
               type="textarea"
@@ -65,7 +65,7 @@
               autosize
             />
           </el-form-item>
-          <el-form-item v-show="insideContent && isShowField('content')" label="内容" prop="content">
+          <el-form-item v-if="insideContent && isShowField('content')" label="内容" prop="content">
             <tinymce v-model="info.content" :height="300" />
           </el-form-item>
           <el-form-item label="排序" prop="sort" style="width: 250px">
@@ -120,7 +120,7 @@ export default {
         cover: '',
         photos: [],
         content: '',
-        sort: ''
+        sort: 0
       },
       rules: {
         title: [{ required: true, message: '请输入标题', trigger: 'change' }],
