@@ -1,5 +1,5 @@
 module.exports = {
-  title: '全民在帮管理后台',
+  title: '全民帮帮管理后台',
 
   appId: 'app551ac64a61ebaadbf645274d334f9153',
   appSecret: 'a025ea3ff65610c8a95b6e7cfde500da',
