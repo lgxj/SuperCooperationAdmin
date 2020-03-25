@@ -313,6 +313,23 @@ export const asyncRoutes = [
         meta: {
           title: '反馈'
         }
+      },
+      {
+        path: 'customer',
+        component: () => import('@/pages/user/customer/index'),
+        name: 'UserCustomer',
+        meta: {
+          title: '客服'
+        }
+      },
+      {
+        path: 'customer/:id/:name',
+        component: () => import('@/pages/user/customer/history'),
+        name: 'UserCustomerHistory',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `客服记录：${wordLimit(route.params['name'])}`
+        }
       }
     ]
   },
