@@ -41,11 +41,25 @@ export const makeParamSource = params => {
 }
 
 /**
+ * encodeURIComponent未编码的部分字符手动编码
+ * @param res
+ * @returns {*}
+ */
+const translateURI = res => {
+  res = res.replace(/\!/g, '%21')
+  res = res.replace(/\(/g, '%28')
+  res = res.replace(/\)/g, '%29')
+  res = res.replace(/\'/g, '%27')
+  return res
+}
+
+/**
  * 签名
  * @param source
  * @returns {*}
  */
 export const sign = source => {
+  source = translateURI(source)
   return Base64.stringify(hmacSHA1(source, settings.appSecret))
 }
 
