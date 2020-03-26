@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>{{ customerNick }}的接待用户列表</span>
+            <span>{{ customerNick }} 的接待用户列表</span>
           </div>
           <users :user-id="customerId" @checked="checkedUser" />
         </el-card>
@@ -13,7 +13,7 @@
       <el-col :span="12">
         <el-card v-if="messageId" class="box-card">
           <div slot="header" class="clearfix">
-            <span>与{{ userNick }}的聊天记录</span>
+            <span>与 {{ userNick }} 的聊天记录</span>
           </div>
           <messages :message-id="messageId" />
         </el-card>

@@ -11,17 +11,17 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="用户名" width="150">
+      <el-table-column align="center" label="用户名">
         <template slot-scope="{row}">
           {{ row.user.user_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="昵称" width="150">
+      <el-table-column align="center" label="昵称">
         <template slot-scope="{row}">
           {{ row.nick }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="在线状态" width="150">
+      <el-table-column align="center" label="在线状态">
         <template slot-scope="{row}">
           {{ stateName(row.state) }}
         </template>

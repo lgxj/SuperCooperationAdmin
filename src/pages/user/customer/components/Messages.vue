@@ -8,7 +8,9 @@
       </el-table-column>
       <el-table-column align="center" label="内容">
         <template slot-scope="{row}">
-          {{ row.content }}
+          <span v-if="row.title === 'address'"><el-image class="map" :src="row.content" fit="cover" /></span>
+          <span v-else-if="row.title === 'pic'"><el-image class="photo" :src="row.content" fit="cover" /></span>
+          <span v-else>{{ row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="时间">
@@ -62,5 +64,10 @@ export default {
 </script>
 
 <style scoped>
-
+  .map {
+    width: 100px;
+  }
+  .phone {
+    max-width: 200px;
+  }
 </style>
