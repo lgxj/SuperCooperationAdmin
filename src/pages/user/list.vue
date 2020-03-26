@@ -41,9 +41,11 @@
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" label="操作">
         <template slot-scope="{row, $index}">
           <el-button type="info" size="mini" plain @click="toIm(row)">发信息</el-button>
+          <el-button type="primary" size="mini" plain @click="toOrder(row, 1)">Ta的发单</el-button>
+          <el-button v-if="row.is_certification" type="success" size="mini" plain @click="toOrder(row, 2)">Ta的接单</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
@@ -62,6 +64,10 @@
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="pagination" />
+
+    <el-dialog :visible.sync="certificationDialogVisible" title="实名认证信息" :close-on-click-modal="false" width="600px">
+      <certification v-if="certificationUserId" :user-id="certificationUserId" />
+    </el-dialog>
   </div>
 </template>
 
@@ -70,8 +76,11 @@ import table from '@/mixins/table'
 import { del, getList } from '@/api/user/user'
 import { userStatus, userRegType, globalYesNo } from '@/utils/const'
 
+import Certification from './components/Certification'
+
 export default {
   name: 'UserList',
+  components: { Certification },
   mixins: [
     table
   ],
@@ -82,7 +91,9 @@ export default {
       category: [],
       userStatus,
       userRegType,
-      globalYesNo
+      globalYesNo,
+      certificationDialogVisible: false,
+      certificationUserId: ''
     }
   },
   created() {
@@ -110,12 +121,17 @@ export default {
       })
     },
     // 显示认证信息
-    showCertification() {
-      this.$message.error('开发中...')
+    showCertification(row) {
+      this.certificationDialogVisible = true
+      this.certificationUserId = row.user_id
     },
     // 去发信息
     toIm(row) {
       this.$router.push({ name: 'MessageIM', query: { userID: 'user-' + row.user_id }})
+    },
+    // 去订单列表
+    toOrder(row, type) {
+      this.$message.error('开发中...')
     }
   }
 }
