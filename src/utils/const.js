@@ -1,3 +1,58 @@
+// 雇主任务状态
+export const EMPLOYER_STATE_UN_START = 0	// 未开始
+export const EMPLOYER_STATE_UN_RECEIVE = 1 // 待帮手接单
+export const EMPLOYER_STATE_UN_CONFIRM = 2 // 待帮手竞价
+export const EMPLOYER_STATE_RECEIVE = 3 // 已接单
+export const EMPLOYER_STATE_DELIVERED = 4 // 已交付
+export const EMPLOYER_STATE_CANCEL = 5 // 已取消
+export const EMPLOYER_STATE_COMPLETE = 6 // 已完成
+export const EMPLOYER_STATE_REFUSE_DELIVERY = 7 // 拒绝交付
+
+// 帮手任务状态
+export const HELPER_STATE_EMPLOYER_UN_CONFIRM = 5	// 待雇主确认(报价后)
+export const HELPER_STATE_RECEIVE = 1 // 已接单
+export const HELPER_STATE_CANCEL = 2 // 已取消
+export const HELPER_STATE_DELIVERED = 3 // 已交付
+export const HELPER_STATE_COMPLETE = 4 // 已完成
+export const HELPER_STATE_REFUSE_DELIVERY = 6 // 交付被拒绝
+
+/**
+ * 雇主任务状态
+ * @type {{EMPLOYER_STATE_REFUSE_DELIVERY: string, EMPLOYER_STATE_DELIVERED: string, EMPLOYER_STATE_UN_RECEIVE: string, EMPLOYER_STATE_COMPLETE: string, EMPLOYER_STATE_UN_START: string, EMPLOYER_STATE_UN_CONFIRM: string, EMPLOYER_STATE_CANCEL: string, EMPLOYER_STATE_RECEIVE: string}}
+ */
+export const taskStatus = {
+  EMPLOYER_STATE_UN_START: '未开始',
+  EMPLOYER_STATE_UN_RECEIVE: '待帮手接单',
+  EMPLOYER_STATE_UN_CONFIRM: '待帮手竞价',
+  EMPLOYER_STATE_RECEIVE: '已接单',
+  EMPLOYER_STATE_DELIVERED: '已交付',
+  EMPLOYER_STATE_CANCEL: '已取消',
+  EMPLOYER_STATE_COMPLETE: '已完成',
+  EMPLOYER_STATE_REFUSE_DELIVERY: '拒绝交付'
+}
+
+/**
+ * 帮手任务状态
+ * @type {{HELPER_STATE_CANCEL: string, HELPER_STATE_EMPLOYER_UN_CONFIRM: string, HELPER_STATE_DELIVERED: string, HELPER_STATE_COMPLETE: string, HELPER_STATE_REFUSE_DELIVERY: string, HELPER_STATE_RECEIVE: string}}
+ */
+export const taskReceiveStatus = {
+  HELPER_STATE_EMPLOYER_UN_CONFIRM:	'待雇主确认',
+  HELPER_STATE_RECEIVE:	'已接单',
+  HELPER_STATE_CANCEL:	'已取消',
+  HELPER_STATE_DELIVERED:	'已交付',
+  HELPER_STATE_COMPLETE:	'已完成',
+  HELPER_STATE_REFUSE_DELIVERY:	'交付被拒绝'
+}
+
+/**
+ * 任务类型
+ * @type {{'0': string, '1': string}}
+ */
+export const taskTypes = {
+  0: '悬赏任务',
+  1: '竞价任务'
+}
+
 /**
  * 用户状态
  * @type {*[]}

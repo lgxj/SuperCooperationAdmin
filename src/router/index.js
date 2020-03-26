@@ -334,6 +334,45 @@ export const asyncRoutes = [
     ]
   },
 
+  {
+    path: '/task',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true, // will always show the root menu
+    name: 'Task',
+    meta: {
+      title: '任务管理',
+      icon: 'tab'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/task/list'),
+        name: 'TaskList',
+        meta: {
+          title: '发单列表'
+        }
+      },
+      {
+        path: 'receive',
+        component: () => import('@/pages/task/receive'),
+        name: 'TaskReceiveList',
+        meta: {
+          title: '接单列表'
+        }
+      },
+      {
+        path: 'detail/:id/:name',
+        component: () => import('@/pages/task/detail'),
+        name: 'TaskDetail',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `任务详情：${wordLimit(route.params['name'])}`
+        }
+      }
+    ]
+  },
+
   ...devRouter,
 
   // 404 page must be placed at the end !!!
