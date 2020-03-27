@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="search.keyword" placeholder="关键字搜索" style="width: 200px;" class="filter-item" clearable />
+      <!--<el-input v-model="search.keyword" placeholder="关键字搜索" style="width: 200px;" class="filter-item" clearable />
       <el-select v-model="search.state" placeholder="在线状态" clearable style="width: 120px" class="filter-item">
         <el-option label="在线" value="1" />
         <el-option label="离线" value="2" />
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>-->
       <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">添加</el-button>
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="用户名" min-width="120">
         <template slot-scope="{row}">
-          {{ row.user.user_name }}
+          {{ row.user_name }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="昵称" min-width="120">
@@ -45,8 +45,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="pagination" />
 
     <el-dialog :visible.sync="dialogVisible" title="添加客服" :close-on-click-modal="false">
       <el-form ref="dataForm" :model="info" :rules="rules" label-width="80px" label-position="left">
@@ -99,7 +97,8 @@ export default {
     },
     loadData() {
       getList(this.listQuery.page, this.listQuery.limit, JSON.stringify(this.search)).then(res => {
-        this.loadedData(res)
+        this.list = res.data
+        this.tableLoading = false
       })
     },
     stateName(state) {
@@ -163,7 +162,6 @@ export default {
     },
     // 客户接待记录
     toCustomerHistory(row) {
-      console.log(row)
       this.$router.push({ name: 'UserCustomerHistory', params: { id: row.user_id, name: row.nick }})
     }
   }
