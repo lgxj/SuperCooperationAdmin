@@ -20,7 +20,8 @@ export default {
         // title: undefined,
         // type: undefined,
         sort: 'id'
-      }
+      },
+      editIndex: ''
     }
   },
   created() {

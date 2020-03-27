@@ -369,6 +369,14 @@ export const asyncRoutes = [
         meta: {
           dynamicTitle: route => `任务详情：${wordLimit(route.params['name'])}`
         }
+      },
+      {
+        path: 'category',
+        component: () => import('@/pages/task/category'),
+        name: 'TaskCategory',
+        meta: {
+          title: '任务分类'
+        }
       }
     ]
   },
