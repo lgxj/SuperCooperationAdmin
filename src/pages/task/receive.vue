@@ -101,7 +101,7 @@
 
 <script>
 import table from '@/mixins/table'
-import { getReceiveList } from '@/api/task'
+import { getReceiveList } from '@/api/task/index'
 import { taskTypes, taskReceiveStatus } from '@/utils/const'
 
 export default {

@@ -124,7 +124,7 @@
 
 <script>
 import table from '@/mixins/table'
-import { getList } from '@/api/task'
+import { getList } from '@/api/task/index'
 import { taskTypes, taskStatus } from '@/utils/const'
 
 export default {
