@@ -20,12 +20,12 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="类型" width="150">
+      <el-table-column align="center" label="类型" min-width="150">
         <template slot-scope="{row}">
           {{ feedbackTypes[row.feedback_type] }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户" width="180">
+      <el-table-column align="center" label="用户" min-width="180">
         <template slot-scope="{row}">
           {{ row.user ? row.user.user_name : '' }}
         </template>
@@ -40,12 +40,12 @@
           <el-image v-for="(item, index) in JSON.parse(row.feedback_images)" :key="index" lazy :src="item" style="width: 70px; height: 70px" fit="scale-down" class="mr-10" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="反馈时间" width="160">
+      <el-table-column align="center" label="反馈时间" min-width="160">
         <template slot-scope="{row}">
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="100">
+      <el-table-column align="center" label="操作" min-width="100">
         <template slot-scope="{row, $index}">
           <el-popover
             v-model="row.dialogVisible"

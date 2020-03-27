@@ -5,12 +5,12 @@
     <el-tabs class="mt-10" @tab-click="handleTabChange">
       <el-tab-pane v-for="(item, index) in group" :key="index" :label="item.label">
         <el-table v-loading="tableLoading" :data="groupList(item.value)" style="width: 100%;margin-top:30px;" border highlight-current-row>
-          <el-table-column align="center" label="名称" width="150">
+          <el-table-column align="center" label="名称" min-width="150">
             <template slot-scope="{row}">
               {{ row.config_name }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="Key" width="150">
+          <el-table-column align="center" label="Key" min-width="150">
             <template slot-scope="{row}">
               {{ row.config_key }}
             </template>
@@ -21,17 +21,17 @@
               <template v-else>{{ formatValue(row) }}</template>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="扩展信息" width="250">
+          <el-table-column align="center" label="扩展信息" min-width="250">
             <template slot-scope="{row}">
               {{ row.config_extra }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="说明" width="250">
+          <el-table-column align="center" label="说明" min-width="250">
             <template slot-scope="{row}">
               {{ row.config_desc }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="操作" width="240">
+          <el-table-column align="center" label="操作" min-width="240">
             <template slot-scope="{row}">
               <el-button type="primary" size="mini" @click="handleEdit(row, 'setValue')">修改值</el-button>
               <el-button type="primary" size="mini" @click="handleEdit(row, 'update')">编辑</el-button>

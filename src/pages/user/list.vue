@@ -15,28 +15,28 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="用户名" width="150">
+      <el-table-column align="center" label="用户名" min-width="150">
         <template slot-scope="{row}">
           {{ row.user_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态" width="120">
+      <el-table-column align="center" label="状态" min-width="120">
         <template slot-scope="{row}">
           {{ userStatus[row.user_status] }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="是否实名认证" width="150">
+      <el-table-column align="center" label="是否实名认证" min-width="150">
         <template slot-scope="{row}">
           {{ globalYesNo[row.is_certification] }}
           <el-link v-if="row.is_certification" type="primary" :underline="false" class="ml-10" @click="showCertification(row)">查看</el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="注册类型" width="120">
+      <el-table-column align="center" label="注册类型" min-width="120">
         <template slot-scope="{row}">
           {{ userRegType[row.register_type] }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="注册时间" width="160">
+      <el-table-column align="center" label="注册时间" min-width="160">
         <template slot-scope="{row}">
           {{ row.created_at }}
         </template>
@@ -80,7 +80,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="pagination" />
 
-    <el-dialog :visible.sync="certificationDialogVisible" title="实名认证信息" :close-on-click-modal="false" width="600px">
+    <el-dialog :visible.sync="certificationDialogVisible" title="实名认证信息" :close-on-click-modal="false" min-width="600px">
       <certification v-if="certificationUserId" :user-id="certificationUserId" />
     </el-dialog>
   </div>

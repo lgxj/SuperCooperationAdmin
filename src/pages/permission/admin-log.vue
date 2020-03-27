@@ -17,17 +17,17 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="用户" width="150">
+      <el-table-column align="center" label="用户" min-width="150">
         <template slot-scope="{row}">
           {{ row.admin.name }} ({{ row.admin.username }})
         </template>
       </el-table-column>
-      <el-table-column align="center" label="类型" width="150">
+      <el-table-column align="center" label="类型" min-width="150">
         <template slot-scope="{row}">
           {{ row.type }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="名称" width="150">
+      <el-table-column align="center" label="名称" min-width="150">
         <template slot-scope="{row}">
           {{ row.title }}
         </template>
@@ -37,7 +37,7 @@
           {{ row.content }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="时间" width="150">
+      <el-table-column align="center" label="时间" min-width="150">
         <template slot-scope="{row}">
           {{ row.created_at }}
         </template>

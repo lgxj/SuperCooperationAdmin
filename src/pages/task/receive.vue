@@ -43,47 +43,47 @@
     <el-divider class="mt0" />
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border stripe>
-      <el-table-column align="center" label="接单用户" width="150">
+      <el-table-column align="center" label="接单用户" min-width="150">
         <template slot-scope="{row}">
           {{ row.user_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务编号" width="170">
+      <el-table-column align="center" label="任务编号" min-width="170">
         <template slot-scope="{row}">
           {{ row.order_no }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务标题" width="200">
+      <el-table-column align="center" label="任务标题" min-width="200">
         <template slot-scope="{row}">
           {{ row.order_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务类型" width="80">
+      <el-table-column align="center" label="任务类型" min-width="80">
         <template slot-scope="{row}">
           {{ row.display_order_type }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务分类" width="80">
+      <el-table-column align="center" label="任务分类" min-width="80">
         <template slot-scope="{row}">
           {{ categoryDic[row.category] || '' }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务金额" width="80">
+      <el-table-column align="center" label="任务金额" min-width="80">
         <template slot-scope="{row}">
           {{ row.origin_price / 100 }}元
         </template>
       </el-table-column>
-      <el-table-column align="center" label="任务状态" width="100">
+      <el-table-column align="center" label="任务状态" min-width="100">
         <template slot-scope="{row}">
           {{ row.display_receive_state }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="接单时间" width="160">
+      <el-table-column align="center" label="接单时间" min-width="160">
         <template slot-scope="{row}">
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="帮手星级" width="100">
+      <el-table-column align="center" label="帮手星级" min-width="100">
         <template slot-scope="{row}">
           {{ row.helper_level }}
         </template>
