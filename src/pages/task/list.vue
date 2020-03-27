@@ -111,7 +111,7 @@
           {{ row.helper_level }}星及以上
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="110">
         <template slot-scope="{row}">
           <el-button type="info" size="mini" plain @click="toIm(row)">查看详情</el-button>
         </template>

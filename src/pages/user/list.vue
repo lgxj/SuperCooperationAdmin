@@ -41,7 +41,7 @@
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="360">
         <template slot-scope="{row, $index}">
           <el-button type="info" size="mini" plain @click="toIm(row)">发信息</el-button>
           <el-button type="primary" size="mini" plain @click="toOrder(row, 1)">Ta的发单</el-button>

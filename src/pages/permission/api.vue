@@ -10,7 +10,7 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="listSort" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="所属分组" min-width="150">
+      <el-table-column align="center" label="所属分组" min-width="120">
         <template slot-scope="{row}">
           {{ apiGroup[row.group_id] || '' }}
         </template>
@@ -25,7 +25,7 @@
           {{ row.path }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="请求方式" min-width="150">
+      <el-table-column align="center" label="请求方式" min-width="100">
         <template slot-scope="{row}">
           {{ row.method }}
         </template>
@@ -50,7 +50,7 @@
           {{ row.sort }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="备注">
+      <el-table-column align="header-center" label="备注" min-width="120">
         <template slot-scope="{row}">
           {{ row.remark }}
         </template>

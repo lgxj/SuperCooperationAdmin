@@ -11,22 +11,22 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="用户名">
+      <el-table-column align="center" label="用户名" min-width="120">
         <template slot-scope="{row}">
           {{ row.user.user_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="昵称">
+      <el-table-column align="center" label="昵称" min-width="120">
         <template slot-scope="{row}">
           {{ row.nick }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="在线状态">
+      <el-table-column align="center" label="在线状态" min-width="100">
         <template slot-scope="{row}">
           {{ stateName(row.state) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="180">
         <template slot-scope="{row, $index}">
           <el-button type="info" size="mini" plain @click="toCustomerHistory(row)">接待记录</el-button>
           <el-popover

@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="发送者">
+      <el-table-column align="center" label="发送者" min-width="120">
         <template slot-scope="{row}">
           {{ row.user_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="内容">
+      <el-table-column align="center" label="内容" min-width="200">
         <template slot-scope="{row}">
           <span v-if="row.title === 'address'"><el-image class="map" :src="row.content" fit="cover" /></span>
           <span v-else-if="row.title === 'pic'"><el-image class="photo" :src="row.content" fit="cover" /></span>
           <span v-else>{{ row.content }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="时间">
+      <el-table-column align="center" label="时间" min-width="160">
         <template slot-scope="{row}">
           {{ row.created_at }}
         </template>

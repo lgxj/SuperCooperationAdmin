@@ -13,7 +13,7 @@
           {{ row.code }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="备注">
+      <el-table-column align="header-center" label="备注" min-width="200">
         <template slot-scope="{row}">
           {{ row.remark }}
         </template>

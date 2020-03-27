@@ -5,17 +5,17 @@
     <el-tabs class="mt-10" @tab-click="handleTabChange">
       <el-tab-pane v-for="(item, index) in group" :key="index" :label="item.label">
         <el-table v-loading="tableLoading" :data="groupList(item.value)" style="width: 100%;margin-top:30px;" border highlight-current-row>
-          <el-table-column align="center" label="名称" min-width="150">
+          <el-table-column align="center" label="名称" min-width="120">
             <template slot-scope="{row}">
               {{ row.config_name }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="Key" min-width="150">
+          <el-table-column align="center" label="Key" min-width="120">
             <template slot-scope="{row}">
               {{ row.config_key }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="值">
+          <el-table-column align="center" label="值" min-width="120">
             <template slot-scope="{row}">
               <el-image v-if="row.config_type === 'img'" lazy :src="getImgFullPath(row.config_value)" style="width: 70px; height: 70px" fit="scale-down" />
               <template v-else>{{ formatValue(row) }}</template>

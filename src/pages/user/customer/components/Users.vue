@@ -1,17 +1,17 @@
 <template>
   <div>
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="昵称">
+      <el-table-column align="center" label="昵称" min-width="100">
         <template slot-scope="{row}">
           {{ row.user.nick }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="最后联系时间">
+      <el-table-column align="center" label="最后联系时间" min-width="160">
         <template slot-scope="{row}">
           {{ row.updated_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="110">
         <template slot-scope="{row}">
           <el-button type="info" size="mini" plain @click="toMsg(row)">查看记录</el-button>
         </template>

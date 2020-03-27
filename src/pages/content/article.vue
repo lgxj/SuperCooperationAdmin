@@ -10,32 +10,32 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="标题" min-width="150">
+      <el-table-column align="center" label="标题" min-width="200">
         <template slot-scope="{row}">
           {{ row.title }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="分类" min-width="150">
+      <el-table-column align="center" label="分类" min-width="120">
         <template slot-scope="{row}">
           {{ category[row.category_id] }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="作者">
+      <el-table-column align="center" label="作者" min-width="80">
         <template slot-scope="{row}">
           {{ row.author }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="阅读数">
+      <el-table-column align="center" label="阅读数" min-width="80">
         <template slot-scope="{row}">
           {{ row.hits }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="标签">
+      <el-table-column align="center" label="标签" min-width="100">
         <template slot-scope="{row}">
           {{ row.tag ? row.tag.join('、') : '' }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="排序">
+      <el-table-column align="center" label="排序" min-width="80">
         <template slot-scope="{row}">
           {{ row.sort }}
         </template>

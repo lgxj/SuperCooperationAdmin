@@ -14,7 +14,7 @@
           {{ listType[row.list_type] }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="文章数量">
+      <el-table-column align="center" label="文章数量" min-width="80">
         <template slot-scope="{row}">
           {{ row.articles_count }}
         </template>

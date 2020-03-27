@@ -3,12 +3,12 @@
     <el-button type="primary" @click="handleAdd">新建分组</el-button>
 
     <el-table :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="分组名">
+      <el-table-column align="center" label="分组名" min-width="150">
         <template slot-scope="{row}">
           {{ row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="排序" min-width="150">
+      <el-table-column align="center" label="排序" min-width="80">
         <template slot-scope="{row}">
           {{ row.sort }}
         </template>
