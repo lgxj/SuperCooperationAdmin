@@ -17,7 +17,7 @@
       </el-form-item>
       <el-form-item>
         <el-select v-model="search.category" placeholder="任务分类" clearable style="width: 120px" class="filter-item">
-          <el-option v-for="(item, index) in taskTypes" :key="index" :label="item" :value="index" />
+          <el-option v-for="(item, index) in categoryDic" :key="index" :label="item" :value="index" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -74,7 +74,7 @@
       </el-table-column>
       <el-table-column align="center" label="任务分类" width="80">
         <template slot-scope="{row}">
-          {{ row.category }}
+          {{ categoryDic[row.category] || '' }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="任务金额" width="80">
@@ -125,6 +125,7 @@
 <script>
 import table from '@/mixins/table'
 import { getList } from '@/api/task/index'
+import { getDic } from '@/api/task/category'
 import { taskTypes, taskStatus } from '@/utils/const'
 
 export default {
@@ -148,7 +149,8 @@ export default {
         create_time: []
       },
       taskTypes,
-      taskStatus
+      taskStatus,
+      categoryDic: []
     }
   },
   created() {
@@ -157,10 +159,16 @@ export default {
   methods: {
     init() {
       this.loadData()
+      this.getCategoryDic()
     },
     loadData() {
       getList(this.listQuery.page, this.listQuery.limit, JSON.stringify(this.search)).then(res => {
         this.loadedData(res)
+      })
+    },
+    getCategoryDic() {
+      getDic().then(res => {
+        this.categoryDic = res.data
       })
     },
     handleReset() {
