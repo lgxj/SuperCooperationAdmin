@@ -2,6 +2,15 @@
 export { parseTime, formatTime } from '@/utils'
 
 /**
+ * 去左右空格
+ * @param s
+ * @returns {*}
+ */
+export function trim(s) {
+  return s.replace(/(^\s*)|(\s*$)/g, '')
+}
+
+/**
  * Show plural label if time is plural number
  * @param {number} time
  * @param {string} label

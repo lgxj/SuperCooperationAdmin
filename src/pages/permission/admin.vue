@@ -317,7 +317,7 @@ export default {
       this.info.avatar = resData.image
     },
     handleShowLog(row) {
-      this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: row.name }})
+      this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: this.$filters.trim(row.name) }})
     },
     handleSendMessage(row) {
       this.$router.push({ name: 'MessageIM', query: { userID: 'user-' + row.user_id }})

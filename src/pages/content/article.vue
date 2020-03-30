@@ -103,7 +103,7 @@ export default {
       this.$router.push({ name: 'ContentArticleAdd' })
     },
     handleEdit(row) {
-      this.$router.push({ name: 'ContentArticleEdit', params: { id: row.article_id, name: row.title }})
+      this.$router.push({ name: 'ContentArticleEdit', params: { id: row.article_id, name: this.$filters.trim(row.title) }})
     },
     hideDialog(row) {
       row.dialogVisible = false

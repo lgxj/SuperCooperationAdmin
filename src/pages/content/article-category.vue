@@ -74,7 +74,7 @@ export default {
       this.$router.push({ name: 'ContentArticleCategoryAdd' })
     },
     handleEdit(row) {
-      this.$router.push({ name: 'ContentArticleCategoryEdit', params: { id: row.article_category_id, name: row.name }})
+      this.$router.push({ name: 'ContentArticleCategoryEdit', params: { id: row.article_category_id, name: this.$filters.trim(row.name) }})
     },
     hideDialog(row) {
       row.dialogVisible = false

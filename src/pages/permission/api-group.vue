@@ -153,7 +153,7 @@ export default {
     },
     handleShowApi(row) {
       console.log(this.list)
-      this.$router.push({ name: 'PermissionApi', params: { group_id: row.api_group_id, name: row.name }})
+      this.$router.push({ name: 'PermissionApi', params: { group_id: row.api_group_id, name: this.$filters.trim(row.name) }})
     }
   }
 }

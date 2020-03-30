@@ -162,7 +162,7 @@ export default {
     },
     // 客户接待记录
     toCustomerHistory(row) {
-      this.$router.push({ name: 'UserCustomerHistory', params: { id: row.user_id, name: row.nick }})
+      this.$router.push({ name: 'UserCustomerHistory', params: { id: row.user_id, name: this.$filters.trim(row.nick) }})
     }
   }
 }

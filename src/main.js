@@ -26,6 +26,8 @@ import tim from './utils/im'
 
 Vue.prototype.$tim = tim
 
+Vue.prototype.$filters = filters
+
 permission.install(Vue)
 role.install(Vue)
 
