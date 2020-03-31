@@ -1,3 +1,15 @@
+// 平台
+export const appTypes = {
+  android: '安桌',
+  ios: 'iOS'
+}
+
+// APP更新类型
+export const appUpdateTypes = {
+  1: '资源更新包',
+  0: '完整安装包'
+}
+
 // 雇主任务状态
 export const EMPLOYER_STATE_UN_START = 0	// 未开始
 export const EMPLOYER_STATE_UN_RECEIVE = 1 // 待帮手接单

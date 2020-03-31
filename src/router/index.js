@@ -159,7 +159,7 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/resource'),
         name: 'PermissionResource',
         meta: {
-          title: '资源',
+          title: '资源列表',
           roles: ['dev']
         }
       },
@@ -168,7 +168,7 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/role'),
         name: 'PermissionRole',
         meta: {
-          title: '角色'
+          title: '角色列表'
         }
       },
       {
@@ -176,7 +176,7 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/admin'),
         name: 'PermissionAdmin',
         meta: {
-          title: '管理员'
+          title: '管理员列表'
         }
       },
       {
@@ -281,7 +281,15 @@ export const asyncRoutes = [
         component: () => import('@/pages/pool/config'),
         name: 'PoolConfig',
         meta: {
-          title: '配置'
+          title: '配置管理'
+        }
+      },
+      {
+        path: 'upgrade',
+        component: () => import('@/pages/pool/upgrade'),
+        name: 'PoolAppUpdate',
+        meta: {
+          title: 'APP更新管理'
         }
       }
     ]
@@ -303,7 +311,7 @@ export const asyncRoutes = [
         component: () => import('@/pages/user/list'),
         name: 'UserList',
         meta: {
-          title: '列表'
+          title: '用户列表'
         }
       },
       {
@@ -311,7 +319,7 @@ export const asyncRoutes = [
         component: () => import('@/pages/user/feedback'),
         name: 'UserFeedback',
         meta: {
-          title: '反馈'
+          title: '用户反馈'
         }
       },
       {
@@ -319,7 +327,7 @@ export const asyncRoutes = [
         component: () => import('@/pages/user/customer/index'),
         name: 'UserCustomer',
         meta: {
-          title: '客服'
+          title: '客服列表'
         }
       },
       {

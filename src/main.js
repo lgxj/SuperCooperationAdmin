@@ -26,11 +26,15 @@ import tim from './utils/im'
 
 import * as Settings from '@/settings'
 
+import * as Const from '@/utils/const'
+
 Vue.prototype.$tim = tim
 
 Vue.prototype.$filters = filters
 
 Vue.prototype.$settings = Settings
+
+Vue.prototype.$const = Const
 
 permission.install(Vue)
 role.install(Vue)

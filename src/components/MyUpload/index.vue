@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-upload
+      ref="upload"
       :name="name"
       :multiple="multiple"
       :file-list="formatPath(fileList)"
@@ -15,6 +16,7 @@
       :headers="headers"
       :list-type="listType"
       :limit="max"
+      :data="postData"
     >
       <slot>
         <i class="el-icon-plus" />
@@ -62,6 +64,14 @@ export default {
     beforeUploadAction: {
       type: Function,
       default: null
+    },
+    directory: {
+      type: String,
+      default: ''
+    },
+    businessType: {
+      type: [Number, String],
+      default: 0
     }
   },
   data() {
@@ -69,14 +79,15 @@ export default {
       listObj: {},
       uploadImgApiPath,
       dialogImageUrl: '',
-      dialogVisible: false
+      dialogVisible: false,
+      postData: {}
     }
   },
   computed: {
     headers() {
       const headers = {}
       headers[ 'SC-API-APP'] = appId
-      const signSource = makeParamSource()
+      const signSource = makeParamSource(this.postData)
       headers[ 'SC-API-SIGNATURE'] = sign(signSource)
       if (this.$store.getters.token) {
         headers['SC-ACCESS-TOKEN'] = this.$store.getters.token
@@ -101,6 +112,10 @@ export default {
         path: item.path
       }
     })
+    this.postData = {
+      directory: this.directory,
+      businessType: this.businessType
+    }
   },
   methods: {
     formatPath(list) {
@@ -110,6 +125,10 @@ export default {
       })
     },
     handleSuccess(response, file) {
+      if (!response.success) {
+        this.$refs.upload.abort(file)
+        return this.$message.error(response.message)
+      }
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
@@ -154,7 +173,7 @@ export default {
     handleExceed() {
       this.$message({
         type: 'error',
-        message: '最多上传' + this.max + '张图片'
+        message: '最多上传' + this.max + '个文件'
       })
     },
     handlePictureCardPreview(file) {
