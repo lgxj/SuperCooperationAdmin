@@ -21,14 +21,14 @@ export const HELPER_STATE_REFUSE_DELIVERY = 6 // 交付被拒绝
  * @type {{EMPLOYER_STATE_REFUSE_DELIVERY: string, EMPLOYER_STATE_DELIVERED: string, EMPLOYER_STATE_UN_RECEIVE: string, EMPLOYER_STATE_COMPLETE: string, EMPLOYER_STATE_UN_START: string, EMPLOYER_STATE_UN_CONFIRM: string, EMPLOYER_STATE_CANCEL: string, EMPLOYER_STATE_RECEIVE: string}}
  */
 export const taskStatus = {
-  EMPLOYER_STATE_UN_START: '未开始',
-  EMPLOYER_STATE_UN_RECEIVE: '待帮手接单',
-  EMPLOYER_STATE_UN_CONFIRM: '待帮手竞价',
-  EMPLOYER_STATE_RECEIVE: '已接单',
-  EMPLOYER_STATE_DELIVERED: '已交付',
-  EMPLOYER_STATE_CANCEL: '已取消',
-  EMPLOYER_STATE_COMPLETE: '已完成',
-  EMPLOYER_STATE_REFUSE_DELIVERY: '拒绝交付'
+  0: '未开始',
+  1: '待帮手接单',
+  2: '待帮手竞价',
+  3: '已接单',
+  4: '已交付',
+  5: '已取消',
+  6: '已完成',
+  7: '拒绝交付'
 }
 
 /**
@@ -36,12 +36,12 @@ export const taskStatus = {
  * @type {{HELPER_STATE_CANCEL: string, HELPER_STATE_EMPLOYER_UN_CONFIRM: string, HELPER_STATE_DELIVERED: string, HELPER_STATE_COMPLETE: string, HELPER_STATE_REFUSE_DELIVERY: string, HELPER_STATE_RECEIVE: string}}
  */
 export const taskReceiveStatus = {
-  HELPER_STATE_EMPLOYER_UN_CONFIRM:	'待雇主确认',
-  HELPER_STATE_RECEIVE:	'已接单',
-  HELPER_STATE_CANCEL:	'已取消',
-  HELPER_STATE_DELIVERED:	'已交付',
-  HELPER_STATE_COMPLETE:	'已完成',
-  HELPER_STATE_REFUSE_DELIVERY:	'交付被拒绝'
+  5:	'待雇主确认',
+  1:	'已接单',
+  2:	'已取消',
+  3:	'已交付',
+  4:	'已完成',
+  6:	'交付被拒绝'
 }
 
 /**

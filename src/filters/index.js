@@ -2,6 +2,35 @@
 export { parseTime, formatTime } from '@/utils'
 
 /**
+ * 判断是否为空
+ */
+export const isEmpty = (data) => {
+  if (!data) return true
+  if (data === 'null' || data === 'undefined') return true
+  if (JSON.stringify(data) === '{}' || JSON.stringify(data) === '[]') return true
+  return false
+}
+
+/**
+ * 格式化地址显示
+ * @param addr
+ * @returns {string}
+ */
+export function formatAddress(addr) {
+  if (!addr) return ''
+  let str = ''
+  if (addr.street.indexOf(addr.region) >= 0) {
+    str += addr.street
+  } else {
+    str += addr.region + addr.street
+  }
+
+  str += addr.address_detail
+
+  return str
+}
+
+/**
  * 去左右空格
  * @param s
  * @returns {*}

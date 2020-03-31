@@ -113,7 +113,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="110">
         <template slot-scope="{row}">
-          <el-button type="info" size="mini" plain @click="toIm(row)">查看详情</el-button>
+          <el-button type="info" size="mini" plain @click="toDetail(row)">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -182,6 +182,11 @@ export default {
         order_time: [],
         create_time: []
       }
+    },
+    // 查看详情
+    toDetail(item) {
+      console.log({ id: item.order_no, name: item.order_name })
+      this.$router.push({ name: 'TaskDetail', params: { id: item.order_no, name: this.$filters.trim(item.order_name) }})
     }
   }
 }

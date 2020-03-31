@@ -6,6 +6,10 @@ module.exports = {
 
   IM_APPID: '1400293884',
 
+  // 任务类型
+  TASK_TYPE_GENERAL: 0, // 悬赏任务
+  TASK_TYPE_COMPETITION: 1, // 竞价任务
+
   /**
    * 上传图片处理地址
    */
