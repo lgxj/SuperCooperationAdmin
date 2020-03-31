@@ -193,6 +193,15 @@ module.exports = {
     'object-curly-spacing': [2, 'always', {
       objectsInObjects: false
     }],
-    'array-bracket-spacing': [2, 'never']
+    'array-bracket-spacing': [2, 'never'],
+    "vue/html-self-closing": ["error",{
+      "html": {
+        "void": "never",
+        "normal": "any",
+        "component": "any"
+      },
+      "svg": "always",
+      "math": "always"
+    }]
   }
 }

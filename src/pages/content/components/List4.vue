@@ -65,6 +65,4 @@ export default {
 }
 </script>
 
-<style scoped>
-  @import 'list.css';
-</style>
+<style scoped src="./list.css"></style>

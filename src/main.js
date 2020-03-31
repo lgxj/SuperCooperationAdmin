@@ -24,9 +24,13 @@ import role from './directive/role'
 
 import tim from './utils/im'
 
+import * as Settings from '@/settings'
+
 Vue.prototype.$tim = tim
 
 Vue.prototype.$filters = filters
+
+Vue.prototype.$settings = Settings
 
 permission.install(Vue)
 role.install(Vue)
