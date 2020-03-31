@@ -388,6 +388,27 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/account',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true, // will always show the root menu
+    name: 'Account',
+    meta: {
+      title: '财务管理',
+      icon: 'money'
+    },
+    children: [
+      {
+        path: 'withdraw',
+        component: () => import('@/pages/account/withdraw/index'),
+        name: 'AccountWithdraw',
+        meta: {
+          title: '提现列表'
+        }
+      }
+    ]
+  },
 
   ...devRouter,
 
