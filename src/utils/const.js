@@ -158,3 +158,15 @@ export const datetimeRangePickerOptions = {
       }
     }]
 }
+
+/**
+ * 提现状态
+ * @type {{"0": string, "1": string, "2": string, "3": string, "4": string}}
+ */
+export const withdrawStatus = {
+  0: '待审核',
+  1: '已审核',
+  2: '待重试/提现中',
+  3: '已完成',
+  4: '提现失败'
+}
