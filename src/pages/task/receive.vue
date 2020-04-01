@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" :model="search" class="demo-form-inline">
-      <el-form-item>
+      <el-form-item v-if="!user_id">
         <el-input v-model="search.user_name" placeholder="帮手账号/手机号" style="width: 180px;" class="filter-item" clearable />
       </el-form-item>
       <el-form-item>
@@ -90,7 +90,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="110">
         <template slot-scope="{row}">
-          <el-button type="info" size="mini" plain @click="toIm(row)">查看详情</el-button>
+          <el-button type="info" size="mini" plain @click="toDetail(row)">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -112,6 +112,8 @@ export default {
   ],
   data() {
     return {
+      user_id: '',
+      user_name: '',
       listQuery: {
         limit: 10
       },
@@ -130,6 +132,9 @@ export default {
     }
   },
   created() {
+    this.user_id = this.$route.params.id || ''
+    this.user_name = this.$route.params.name || ''
+    this.search.user_id = this.user_id
     this.init()
   },
   methods: {
@@ -157,6 +162,10 @@ export default {
         order_state: '',
         create_time: []
       }
+    },
+    // 查看详情
+    toDetail(item) {
+      this.$router.push({ name: 'TaskDetail', params: { id: item.order_no, name: this.$filters.trim(item.order_name) }})
     }
   }
 }

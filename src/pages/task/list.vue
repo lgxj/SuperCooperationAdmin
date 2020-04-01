@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" :model="search" class="demo-form-inline">
-      <el-form-item>
+      <el-form-item v-if="!user_id">
         <el-input v-model="search.user_name" placeholder="发单用户账号/手机号" style="width: 180px;" class="filter-item" clearable />
       </el-form-item>
       <el-form-item>
@@ -135,6 +135,8 @@ export default {
   ],
   data() {
     return {
+      user_id: '',
+      user_name: '',
       listQuery: {
         limit: 10
       },
@@ -154,6 +156,9 @@ export default {
     }
   },
   created() {
+    this.user_id = this.$route.params.id || ''
+    this.user_name = this.$route.params.name || ''
+    this.search.user_id = this.user_id
     this.init()
   },
   methods: {
@@ -185,7 +190,6 @@ export default {
     },
     // 查看详情
     toDetail(item) {
-      console.log({ id: item.order_no, name: item.order_name })
       this.$router.push({ name: 'TaskDetail', params: { id: item.order_no, name: this.$filters.trim(item.order_name) }})
     }
   }

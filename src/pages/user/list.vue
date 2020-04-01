@@ -162,7 +162,11 @@ export default {
     },
     // 去订单列表
     toOrder(row, type) {
-      this.$message.error('开发中...')
+      if (type === 1) {
+        this.$router.push({ name: 'TaskListByUser', params: { id: row.user_id, name: row.user_name }})
+      } else {
+        this.$router.push({ name: 'TaskReceiveListByUser', params: { id: row.user_id, name: row.user_name }})
+      }
     }
   }
 }

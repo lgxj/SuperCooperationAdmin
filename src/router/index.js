@@ -362,11 +362,29 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'list/:id/:name',
+        component: () => import('@/pages/task/list'),
+        name: 'TaskListByUser',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `${route.params['name']} 的发单`
+        }
+      },
+      {
         path: 'receive',
         component: () => import('@/pages/task/receive'),
         name: 'TaskReceiveList',
         meta: {
           title: '接单列表'
+        }
+      },
+      {
+        path: 'receive/:id/:name',
+        component: () => import('@/pages/task/receive'),
+        name: 'TaskReceiveListByUser',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `${route.params['name']} 的接单`
         }
       },
       {
