@@ -8,7 +8,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* dev router */
-import devRouter from '@/router/modules/dev'
+// import devRouter from '@/router/modules/dev'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -437,7 +437,7 @@ export const asyncRoutes = [
     ]
   },
 
-  ...devRouter,
+  // ...devRouter,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
