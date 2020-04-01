@@ -48,9 +48,10 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="360">
         <template slot-scope="{row, $index}">
-          <el-button type="info" size="mini" plain @click="toIm(row)">发信息</el-button>
+          <el-button size="mini" plain @click="toDetail(row)">用户详情</el-button>
           <el-button type="primary" size="mini" plain @click="toOrder(row, 1)">Ta的发单</el-button>
           <el-button v-if="row.is_certification" type="success" size="mini" plain @click="toOrder(row, 2)">Ta的接单</el-button>
+          <el-button type="info" size="mini" plain @click="toIm(row)">发信息</el-button>
           <el-popover
             v-if="Number(row.user_status) === 1"
             v-model="row.dialogVisible"
@@ -167,6 +168,10 @@ export default {
       } else {
         this.$router.push({ name: 'TaskReceiveListByUser', params: { id: row.user_id, name: row.user_name }})
       }
+    },
+    // 去用户详情
+    toDetail(row) {
+      this.$router.push({ name: 'UserDetail', params: { id: row.user_id, name: row.user_name }})
     }
   }
 }

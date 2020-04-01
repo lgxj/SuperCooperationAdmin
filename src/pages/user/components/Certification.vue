@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="dataForm" label-width="120px" label-position="left" size="mini">
+  <el-form ref="dataForm" label-width="180px" label-position="left" size="mini">
     <el-form-item label="姓名">
       {{ info.name }}
     </el-form-item>
@@ -25,13 +25,13 @@
       {{ info.authority }}
     </el-form-item>
     <el-form-item label="人像面照片">
-      <el-image class="map" :src="info.frontPhoto" fit="cover" />
+      <el-image class="photo" :src="info.frontPhoto" fit="cover" />
     </el-form-item>
     <el-form-item label="国徽面照片">
-      <el-image class="map" :src="info.backPhoto" fit="cover" />
+      <el-image class="photo" :src="info.backPhoto" fit="cover" />
     </el-form-item>
     <el-form-item label="身份证头像照片">
-      <el-image class="map" :src="info.headPhoto" fit="cover" />
+      <el-image class="photo" :src="info.headPhoto" fit="cover" />
     </el-form-item>
     <el-form-item label="活体检测得分">
       {{ info.liveRate }}
@@ -40,7 +40,7 @@
       {{ info.similarity }}
     </el-form-item>
     <el-form-item label="扫脸照片">
-      <el-image class="map" :src="info.photo" fit="cover" />
+      <el-image class="photo" :src="info.photo" fit="cover" />
     </el-form-item>
   </el-form>
 </template>
@@ -80,5 +80,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .photo {
+    max-width: 360px;
+  }
 </style>

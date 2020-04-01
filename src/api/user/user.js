@@ -11,3 +11,6 @@ export const unFrozen = (user_id) => put('user/unFrozen', { user_id })
 
 // 获取实名认证信息
 export const getUserCertification = (user_id) => get('user/certification', { user_id })
+
+// 获取详情
+export const getDetail = (user_id) => get('user/detail', { user_id })

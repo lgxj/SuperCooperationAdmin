@@ -315,6 +315,15 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'list/:id/:name',
+        component: () => import('@/pages/user/detail'),
+        name: 'UserDetail',
+        hidden: true,
+        meta: {
+          dynamicTitle: route => `${route.params['name']} 的信息`
+        }
+      },
+      {
         path: 'feedback',
         component: () => import('@/pages/user/feedback'),
         name: 'UserFeedback',
