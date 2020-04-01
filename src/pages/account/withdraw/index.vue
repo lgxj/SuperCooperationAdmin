@@ -30,17 +30,20 @@
       <el-form-item>
         <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
         <el-button type="warning" @click="handleReset">重置</el-button>
-        <el-button type="primary" style="" @click="batchVerify">批量审核</el-button>
       </el-form-item>
     </el-form>
 
     <el-divider class="mt0" />
 
-    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border @selection-change="changeFun">
-      <el-table-column align="center" type="selection" width="55" :selectable="checkboxT" />
+    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="记录ID" min-width="60">
         <template slot-scope="{row}">
           {{ row.withdraw_id }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="第三方交易号" min-width="170">
+        <template slot-scope="{row}">
+          {{ row.channel_trade_no }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="交易号" min-width="170">
@@ -78,19 +81,19 @@
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="转账时间" min-width="150">
+      <el-table-column align="center" label="转账方式" min-width="100">
+        <template slot-scope="{row}">
+          {{ row.display_withdraw_type }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="转账信息" min-width="150">
         <template slot-scope="{row}">
           {{ row.channel_pay_time }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态说明" min-width="150">
+      <el-table-column align="center" label="状态说明" min-width="100">
         <template slot-scope="{row}">
           {{ row.display_status }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="提现说明" min-width="150">
-        <template slot-scope="{row}">
-          {{ row.withdraw_desc }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="100">
@@ -203,24 +206,6 @@ export default {
           row.status = 1
         })
       })
-    },
-    // 复选框点击事件
-    changeFun(val) {
-      this.multipleSelection = val
-    },
-    // 批量审核
-    batchVerify(row, index) {
-      if (this.multipleSelection.length === 0) {
-        this.$message.error('请选择需要审核的数据')
-      }
-    },
-    // 判断复选框是否操作
-    checkboxT(row, rowIndex) {
-      if (Number(row.status) === 0 || Number(row.status) === 2) {
-        return true // 禁用
-      } else {
-        return false // 不禁用
-      }
     }
   }
 }
