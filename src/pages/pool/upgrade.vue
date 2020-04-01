@@ -88,11 +88,11 @@
           <el-input v-model.number="info.version" type="number" placeholder="请输入版本号" />
         </el-form-item>
         <el-form-item label="上传更新包">
-          <my-upload list-type="text" :show-file-list="false" :business-type="1" @change="handleChange">
+          <my-upload list-type="text" accept=".wgt,.ipa,.apk" :business-type="1" @change="handleChange">
             <el-button size="small" type="primary">点击上传</el-button>
           </my-upload>
           <div class="el-upload__tip">资源包上传wgt文件，安卓安装包上传apk文件，苹果安装包上传ipa文件。</div>
-          <div class="el-upload__tip">也可直接在下方输入框填写下载地址</div>
+          <div class="el-upload__tip">也可直接在下方输入框填写下载地址或应用商店地址</div>
         </el-form-item>
         <el-form-item label="下载地址" prop="download_url">
           <el-input v-model="info.download_url" placeholder="请输入下载地址" />
@@ -243,8 +243,9 @@ export default {
       })
     },
     handleChange(e) {
-      for (const i in e) {
-        e[i].hasSuccess && (this.info.download_url = e[i].url)
+      const arr = Object.values(e)
+      if (arr.length) {
+        this.info.download_url = arr[0].url
       }
     }
   }

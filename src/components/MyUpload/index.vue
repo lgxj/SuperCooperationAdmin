@@ -4,12 +4,13 @@
       ref="upload"
       :name="name"
       :multiple="multiple"
-      :file-list="formatPath(fileList)"
+      :file-list="formatPath(listObj)"
       :show-file-list="showFileList"
       :on-remove="handleRemove"
       :on-success="handleSuccess"
       :before-upload="beforeUpload"
       :on-exceed="handleExceed"
+      :on-error="handleError"
       :on-preview="handlePictureCardPreview"
       class="editor-slide-upload"
       :action="uploadImgApiPath"
@@ -17,6 +18,7 @@
       :list-type="listType"
       :limit="max"
       :data="postData"
+      :accept="accept"
     >
       <slot>
         <i class="el-icon-plus" />
@@ -30,8 +32,9 @@
 </template>
 
 <script>
-import { uploadImgApiPath, appId, uploadImgDomain } from '@/settings'
+import { uploadImgApiPath, appId } from '@/settings'
 import { makeParamSource, sign } from '@/utils'
+
 export default {
   name: 'MyUpload',
   props: {
@@ -72,6 +75,10 @@ export default {
     businessType: {
       type: [Number, String],
       default: 0
+    },
+    accept: {
+      type: String,
+      default: 'image/*'
     }
   },
   data() {
@@ -119,10 +126,7 @@ export default {
   },
   methods: {
     formatPath(list) {
-      return list.map(item => {
-        item.url = item.url.indexOf('http') === 0 ? item.url : (uploadImgDomain + '/' + item.url)
-        return item
-      })
+      return Object.values(list)
     },
     handleSuccess(response, file) {
       if (!response.success) {
@@ -141,6 +145,9 @@ export default {
       }
       this.$emit('change', this.listObj)
     },
+    handleError(err, file, fileList) {
+      console.log('上传文件失败', err)
+    },
     handleRemove(file, fileList) {
       const list = fileList.filter(item => {
         return item.status === 'success'
@@ -150,6 +157,7 @@ export default {
           path: item.path
         }
       })
+      delete this.listObj[file.uid]
       return this.$emit('change', list)
     },
     beforeUpload(file) {
@@ -160,7 +168,10 @@ export default {
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
-      this.listObj[fileName] = {}
+      this.listObj[fileName] = {
+        hasSuccess: false,
+        uid: file.uid
+      }
       return new Promise((resolve, reject) => {
         const img = new Image()
         img.src = _URL.createObjectURL(file)
@@ -177,6 +188,7 @@ export default {
       })
     },
     handlePictureCardPreview(file) {
+      if (this.listType === 'text') return
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     }
