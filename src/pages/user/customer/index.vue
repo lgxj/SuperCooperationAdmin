@@ -11,6 +11,11 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
+      <el-table-column align="center" label="用户ID" min-width="100">
+        <template slot-scope="{row}">
+          {{ row.user_id }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="用户名" min-width="120">
         <template slot-scope="{row}">
           {{ row.user_name }}
