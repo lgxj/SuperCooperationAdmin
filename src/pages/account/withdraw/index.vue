@@ -41,11 +41,6 @@
           {{ row.withdraw_id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="第三方交易号" min-width="170">
-        <template slot-scope="{row}">
-          {{ row.channel_trade_no }}
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="交易号" min-width="170">
         <template slot-scope="{row}">
           {{ row.withdraw_no }}
@@ -81,14 +76,11 @@
           {{ row.created_at }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="转账方式" min-width="100">
+      <el-table-column align="center" label="转账信息" min-width="230">
         <template slot-scope="{row}">
-          {{ row.display_withdraw_type }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="转账信息" min-width="150">
-        <template slot-scope="{row}">
-          {{ row.channel_pay_time }}
+          <div>{{ row.display_withdraw_type }}</div>
+          <div>{{ row.channel_trade_no }}</div>
+          <div>{{ row.channel_pay_time }}</div>
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态说明" min-width="100">
