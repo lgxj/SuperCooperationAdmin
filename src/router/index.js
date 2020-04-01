@@ -424,6 +424,14 @@ export const asyncRoutes = [
         meta: {
           title: '提现列表'
         }
+      },
+      {
+        path: 'pay',
+        component: () => import('@/pages/account/pay/index'),
+        name: 'AccountPay',
+        meta: {
+          title: '支付列表'
+        }
       }
     ]
   },
