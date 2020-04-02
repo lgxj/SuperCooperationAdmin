@@ -457,6 +457,14 @@ export const asyncRoutes = [
         meta: {
           title: '流水记录'
         }
+      },
+      {
+        path: 'charge',
+        component: () => import('@/pages/account/fee/feerule'),
+        name: 'AccountCharge',
+        meta: {
+          title: '收费管理'
+        }
       }
     ]
   },

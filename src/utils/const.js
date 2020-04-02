@@ -110,6 +110,15 @@ export const globalStatusDis = [
 ]
 
 /**
+ * 状态：是否停用
+ * @type {*[]}
+ */
+export const globalState = {
+  1: '停用',
+  2: '正常'
+}
+
+/**
  * 是与否
  * @type {*[]}
  */
