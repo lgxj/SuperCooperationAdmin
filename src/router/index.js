@@ -441,6 +441,14 @@ export const asyncRoutes = [
         meta: {
           title: '支付列表'
         }
+      },
+      {
+        path: 'pay/refund',
+        component: () => import('@/pages/account/pay/refund'),
+        name: 'AccountPayRefund',
+        meta: {
+          title: '退款列表'
+        }
       }
     ]
   },
