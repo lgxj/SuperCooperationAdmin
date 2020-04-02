@@ -449,6 +449,14 @@ export const asyncRoutes = [
         meta: {
           title: '退款列表'
         }
+      },
+      {
+        path: 'pay/inoutLog',
+        component: () => import('@/pages/account/pay/inoutLog'),
+        name: 'AccountPayInoutLog',
+        meta: {
+          title: '流水记录'
+        }
       }
     ]
   },
