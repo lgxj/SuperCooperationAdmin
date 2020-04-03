@@ -1,23 +1,20 @@
 <template>
   <div class="app-container">
     <!-- 筛选 -->
-    <div v-if="false" class="filter-container">
-      <el-input v-model="search.keyword" placeholder="关键字搜索" style="width: 200px;" class="filter-item" clearable />
-      <el-select v-model="search.status" placeholder="状态" clearable style="width: 100px" class="filter-item">
-        <el-option v-for="(item, index) in accountState" :key="index" :label="item" :value="index" />
-      </el-select>
+    <div class="filter-container">
+      <el-input v-model="search.user_name" placeholder="关键字搜索" style="width: 200px;" class="filter-item" clearable />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
     </div>
     <!-- 表格 -->
     <el-table :data="list" border style="width: 100%">
       <el-table-column prop="user_id" label="用户ID" width="100"></el-table-column>
       <el-table-column prop="user_name" label="用户名" width="180"></el-table-column>
-      <el-table-column prop="balance" label="总余额"></el-table-column>
-      <el-table-column prop="available_balance" label="可用余额"></el-table-column>
-      <el-table-column prop="debt" label="平台欠款"></el-table-column>
-      <el-table-column prop="freeze" label="冻结金额"></el-table-column>
-      <el-table-column prop="cash" label="提现金额"></el-table-column>
-      <el-table-column prop="settled" label="待结算金额"></el-table-column>
+      <el-table-column prop="display_balance" label="总余额"></el-table-column>
+      <el-table-column prop="display_available_balance" label="可用余额"></el-table-column>
+      <el-table-column prop="display_debt" label="平台欠款"></el-table-column>
+      <el-table-column prop="display_freeze" label="冻结金额"></el-table-column>
+      <el-table-column prop="display_cash" label="提现金额"></el-table-column>
+      <el-table-column prop="display_settled" label="待结算金额"></el-table-column>
       <el-table-column label="状态">
         <template slot-scope="{row}">
           {{ accountState[row.state] }}
@@ -36,7 +33,7 @@
     <el-dialog :visible.sync="balanceVisible" title="余额管理" :close-on-click-modal="false" width="430px">
       <el-form ref="dataForm" :model="info" :rules="rules" label-width="80px" label-position="right">
         <el-form-item label="余额" prop="balance">
-          <el-input v-model="info.balance" auto-complete="off" placeholder="请输入余额" @input="change" />
+          <el-input v-model="info.display_balance" auto-complete="off" placeholder="请输入余额" @input="change" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -99,12 +96,12 @@ export default {
     handleEdit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addBalance(this.info.user_id, this.info.balance).then(res => {
+          addBalance(this.info.user_id, this.info.display_balance).then(res => {
             this.$message.success('编辑成功')
             this.balanceVisible = false
           }).then(res => {
             getBalance(this.info.user_id).then(res => {
-              this.info.balance = res.data.balance
+              this.info.display_balance = res.data.balance / 100
               this.info.available_balance = res.data.available_balance
               this.list = arrayReplace(this.list, 'fund_account_id', this.info)
             })
