@@ -100,10 +100,14 @@ export default {
       // })
     },
     handleEdit() {
-      addBalance(this.info.user_id, this.info.balance).then(res => {
-        this.list = arrayReplace(this.list, 'fund_account_id', this.info)
-        this.$message.success('编辑成功')
-        this.balanceVisible = false
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          addBalance(this.info.user_id, this.info.balance).then(res => {
+            this.list = arrayReplace(this.list, 'fund_account_id', this.info)
+            this.$message.success('编辑成功')
+            this.balanceVisible = false
+          })
+        }
       })
     }
   }
