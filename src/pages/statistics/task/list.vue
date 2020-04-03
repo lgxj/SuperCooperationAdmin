@@ -18,7 +18,7 @@
     <el-divider class="mt0" />
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="日期(按天)" min-width="100">
+      <el-table-column align="center" label="日期" min-width="100">
         <template slot-scope="{row}">
           {{ row.day }}
         </template>
