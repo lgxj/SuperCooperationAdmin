@@ -465,6 +465,14 @@ export const asyncRoutes = [
         meta: {
           title: '收费管理'
         }
+      },
+      {
+        path: 'manager',
+        component: () => import('@/pages/account/manager'),
+        name: 'AccountManager',
+        meta: {
+          title: '账户管理'
+        }
       }
     ]
   },

@@ -192,3 +192,9 @@ export const withdrawStatus = {
   3: '已完成',
   4: '提现失败'
 }
+
+export const accountState = {
+  0: '待审核',
+  1: '正常使用',
+  2: '后台禁用'
+}
