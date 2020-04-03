@@ -468,6 +468,27 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/statistics',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true, // will always show the root menu
+    name: 'Statistics',
+    meta: {
+      title: '统计管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'task/list',
+        component: () => import('@/pages/statistics/task/list'),
+        name: 'TaskStatistics',
+        meta: {
+          title: '任务统计'
+        }
+      }
+    ]
+  },
 
   // ...devRouter,
 
