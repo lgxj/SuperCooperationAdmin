@@ -49,7 +49,7 @@
 
 <script>
 import table from '@/mixins/table'
-import { search, addBalance } from '@/api/account/index'
+import { search, getBalance, addBalance } from '@/api/account/index'
 import { accountState } from '@/utils/const'
 import { arrayReplace } from '@/utils'
 import { validateNumber } from '@/utils/validate'
@@ -90,22 +90,24 @@ export default {
       })
     },
     handleBalance(row) {
+      this.info = Object.assign({}, row) // copy obj
       this.balanceVisible = true
-      this.info.user_id = row.user_id
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      // getBalance(row.user_id).then(res => {
-      //   this.info.balance = res.data.balance
-      // })
     },
     handleEdit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           addBalance(this.info.user_id, this.info.balance).then(res => {
-            this.list = arrayReplace(this.list, 'fund_account_id', this.info)
             this.$message.success('编辑成功')
             this.balanceVisible = false
+          }).then(res => {
+            getBalance(this.info.user_id).then(res => {
+              this.info.balance = res.data.balance
+              this.info.available_balance = res.data.available_balance
+              this.list = arrayReplace(this.list, 'fund_account_id', this.info)
+            })
           })
         }
       })
