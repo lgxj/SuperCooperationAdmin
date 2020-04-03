@@ -35,7 +35,7 @@
 
     <el-dialog :visible.sync="balanceVisible" title="余额管理" :close-on-click-modal="false" width="430px">
       <el-form ref="dataForm" :model="info" :rules="rules" label-width="80px" label-position="right">
-        <el-form-item label="扣费比例" prop="balance">
+        <el-form-item label="余额" prop="balance">
           <el-input v-model="info.balance" auto-complete="off" placeholder="请输入余额" @input="change" />
         </el-form-item>
       </el-form>
