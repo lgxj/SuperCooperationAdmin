@@ -20,6 +20,11 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
+      <el-table-column align="center" label="ID" min-width="60">
+        <template slot-scope="{row}">
+          {{ row.feedback_id }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="类型" min-width="120">
         <template slot-scope="{row}">
           {{ feedbackTypes[row.feedback_type] }}

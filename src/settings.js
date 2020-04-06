@@ -20,6 +20,8 @@ module.exports = {
    */
   uploadImgDomain: process.env.VUE_APP_BASE_API,
 
+  webDomain: 'http://sc.250.cn',
+
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel

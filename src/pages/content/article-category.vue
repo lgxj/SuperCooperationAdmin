@@ -34,6 +34,7 @@
             </div>
             <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
+          <el-button size="mini" class="ml-10" @click="handlePreview(row)">查看H5</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -87,6 +88,9 @@ export default {
           this.list.splice(index, 1)
         })
       })
+    },
+    handlePreview(row) {
+      window.open(this.$settings.webDomain + '/content/article?id=' + row.article_category_id, '_blank')
     }
   }
 }

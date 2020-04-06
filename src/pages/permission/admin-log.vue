@@ -32,7 +32,7 @@
           {{ row.title }}
         </template>
       </el-table-column>
-      <el-table-column align="left" label="内容">
+      <el-table-column align="left" label="内容" min-width="200">
         <template slot-scope="{row}">
           {{ row.content }}
         </template>

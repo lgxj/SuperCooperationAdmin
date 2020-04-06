@@ -10,6 +10,11 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
+      <el-table-column align="center" label="ID" min-width="60">
+        <template slot-scope="{row}">
+          {{ row.article_id }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="标题" min-width="200">
         <template slot-scope="{row}">
           {{ row.title }}
@@ -55,6 +60,7 @@
             </div>
             <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
+          <el-button size="mini" class="ml-10" @click="handlePreview(row)">查看H5</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -116,6 +122,9 @@ export default {
           this.list.splice(index, 1)
         })
       })
+    },
+    handlePreview(row) {
+      window.open(this.$settings.webDomain + '/content/article/detail?id=' + row.article_id, '_blank')
     }
   }
 }
