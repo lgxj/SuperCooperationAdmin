@@ -64,6 +64,9 @@ export default {
       datetimeRangePickerOptions
     }
   },
+  created() {
+    this.init()
+  },
   methods: {
     init() {
       this.search.admin_id = this.$route.params.id || ''

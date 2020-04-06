@@ -24,9 +24,6 @@ export default {
       editIndex: ''
     }
   },
-  created() {
-    // this.init()
-  },
   methods: {
     init() {
       this.loadData()
