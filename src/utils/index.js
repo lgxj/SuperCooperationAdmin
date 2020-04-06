@@ -50,6 +50,7 @@ const translateURI = res => {
   res = res.replace(/\(/g, '%28')
   res = res.replace(/\)/g, '%29')
   res = res.replace(/\'/g, '%27')
+  res = res.replace(/\*/g, '%2A')
   return res
 }
 
