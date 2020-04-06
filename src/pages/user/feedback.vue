@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column align="center" label="图片" min-width="100">
         <template slot-scope="{row}">
-          <el-image v-for="(item, index) in JSON.parse(row.feedback_images)" :key="index" lazy :src="item" style="width: 70px; height: 70px" fit="scale-down" :class="{'ml-10': index > 0 }" />
+          <el-image v-for="(item, index) in JSON.parse(row.feedback_images)" :key="index" lazy :src="item" style="width: 70px; height: 70px" fit="scale-down" :class="{'ml-10': index > 0 }" :preview-src-list="JSON.parse(row.feedback_images)" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="反馈时间" min-width="160">
