@@ -14,3 +14,6 @@ export const getUserCertification = (user_id) => get('user/certification', { use
 
 // 获取详情
 export const getDetail = (user_id) => get('user/detail', { user_id })
+
+// 用户定位管理
+export const getPositionSearch = (page, limit, filter) => get('user/position.search', { page, limit, filter })

@@ -347,6 +347,14 @@ export const asyncRoutes = [
         meta: {
           dynamicTitle: route => `客服记录：${wordLimit(route.params['name'])}`
         }
+      },
+      {
+        path: 'position',
+        component: () => import('@/pages/user/position'),
+        name: 'UserPosition',
+        meta: {
+          title: '用户定位'
+        }
       }
     ]
   },
