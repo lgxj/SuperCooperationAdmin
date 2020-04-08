@@ -196,7 +196,7 @@ export default {
     },
     handleAdd() {
       this.resetInfo()
-      this.dialogType = 'add'
+      this.dialogType = 'create'
       this.dialogTitle = '添加'
       this.dialogVisible = true
       this.$nextTick(() => {
