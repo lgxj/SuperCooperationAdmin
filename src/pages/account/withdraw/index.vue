@@ -134,7 +134,7 @@ export default {
         withdraw_account: '',
         channel_trade_no: '',
         withdraw_no: '',
-        create_time: []
+        created_time: []
       },
       withdrawStatus,
       multipleSelection: []
@@ -161,7 +161,7 @@ export default {
         withdraw_account: '',
         channel_trade_no: '',
         withdraw_no: '',
-        create_time: []
+        created_time: []
       }
     },
     /**

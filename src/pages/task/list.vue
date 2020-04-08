@@ -148,7 +148,7 @@ export default {
         category: '',
         order_state: '',
         order_time: [],
-        create_time: []
+        created_time: []
       },
       taskTypes,
       taskStatus,
@@ -185,7 +185,7 @@ export default {
         category: '',
         order_state: '',
         order_time: [],
-        create_time: []
+        created_time: []
       }
     },
     // 查看详情
