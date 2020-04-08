@@ -20,13 +20,13 @@
     <el-table :data="list" border style="width: 100%">
       <el-table-column prop="id" label="标识ID" width="100"></el-table-column>
       <el-table-column prop="user_name" label="用户" width="180"></el-table-column>
-      <el-table-column prop="province" label="省份"></el-table-column>
+      <el-table-column prop="province" label="省份" width="120"></el-table-column>
       <el-table-column prop="city" label="市"></el-table-column>
       <el-table-column prop="region" label="区"></el-table-column>
       <el-table-column prop="street" label="街道"></el-table-column>
       <el-table-column prop="address_detail" label="详细地址"></el-table-column>
-      <el-table-column prop="lng" label="经度"></el-table-column>
-      <el-table-column prop="lat" label="纬度"></el-table-column>
+      <el-table-column prop="lng" label="经度" width="100"></el-table-column>
+      <el-table-column prop="lat" label="纬度" width="100"></el-table-column>
       <el-table-column prop="updated_at" label="修改时间"></el-table-column>
     </el-table>
   </div>
