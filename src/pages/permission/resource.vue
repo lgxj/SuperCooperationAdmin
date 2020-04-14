@@ -32,6 +32,11 @@
           {{ globalStatusDis[row.status] }}
         </template>
       </el-table-column>
+      <el-table-column align="center" label="所属系统" min-width="180">
+        <template slot-scope="{row}">
+          {{ formatSystem(row) }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="是否开发中" min-width="100">
         <template slot-scope="{row}">
           {{ globalYesNo[row.is_dev] }}
@@ -82,6 +87,11 @@
         <el-form-item label="类型" prop="type">
           <el-select v-model="info.type" placeholder="请选择资源类型" class="filter-item">
             <el-option v-for="(item, index) in globalResourceType" :key="index" :label="item" :value="index" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属系统">
+          <el-select v-model="info.systemIds" multiple placeholder="请选择所属系统" filterable clearable class="w100">
+            <el-option v-for="(item, index) in systems" :key="index" :label="item" :value="index" />
           </el-select>
         </el-form-item>
         <el-form-item label="依赖API">
@@ -136,9 +146,10 @@
 
 <script>
 import table from '@/mixins/table'
-import { arrayReplace, arraySplice } from '@/utils'
+import { arrayReplace, arraySplice, deepClone } from '@/utils'
 import { del, add, edit, editApi, getTree } from '@/api/resource'
 import { getTree as getApiTree } from '@/api/api-group'
+import { getDic as getSystemDic } from '@/api/system'
 import { globalResourceType, globalStatusDis, globalYesNo } from '@/utils/const'
 
 export default {
@@ -151,6 +162,7 @@ export default {
       dialogVisible: false,
       dialogType: '',
       apis: [],
+      systems: [],
       resources: [],
       list: [],
       info: {},
@@ -163,7 +175,8 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入资源名', trigger: 'change' }],
         code: [{ required: true, message: '请输入编码', trigger: 'change' }],
-        type: [{ required: true, message: '请选择类型', trigger: 'change' }]
+        type: [{ required: true, message: '请选择类型', trigger: 'change' }],
+        systemIds: [{ required: true, message: '请选择所属系统', trigger: 'change' }]
       },
       globalResourceType,
       globalStatusDis,
@@ -185,8 +198,15 @@ export default {
     this.init()
   },
   methods: {
+    formatSystem(row) {
+      if (!row.systems) return '-'
+      return deepClone(row.systems).map(item => {
+        return item.system_name
+      }).join('、')
+    },
     init() {
       this.loadTree()
+      this.getSystemDic()
       this.loadApiTree()
       this.loadData()
     },
@@ -203,6 +223,11 @@ export default {
           item.children = this.formatTreeData(item.children)
         }
         return item
+      })
+    },
+    getSystemDic() {
+      getSystemDic().then(res => {
+        this.systems = res.data
       })
     },
     loadApiTree() {
@@ -227,6 +252,9 @@ export default {
         item.apiIds = item.apis.map(subItem => {
           return subItem.api_id
         })
+        item.systemIds = item.systems.map(subItem => {
+          return String(subItem.system_id)
+        })
         item.type = String(item.type)
         return item
       })
@@ -242,7 +270,8 @@ export default {
         sort: 0,
         status: 1,
         is_dev: 0,
-        apiIds: []
+        apiIds: [],
+        systemIds: []
       }
     },
     handleAdd() {

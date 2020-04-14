@@ -127,6 +127,15 @@ export const asyncRoutes = [
     },
     children: [
       {
+        path: 'system',
+        component: () => import('@/pages/permission/system'),
+        name: 'PermissionSystem',
+        meta: {
+          title: '系统列表',
+          roles: ['dev']
+        }
+      },
+      {
         path: 'api-group',
         component: () => import('@/pages/permission/api-group'),
         name: 'PermissionApiGroup',

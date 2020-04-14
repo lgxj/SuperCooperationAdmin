@@ -104,10 +104,12 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="头像" prop="name">
-          <el-image lazy :src="info.avatar" style="width: 70px; height: 70px" fit="cover" />
-          <el-button type="primary" icon="el-icon-upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imageCropperShow=true">
-            选择图片
-          </el-button>
+          <div style="display: flex; align-items: center">
+            <el-image v-if="info.avatar" lazy :src="info.avatar" style="width: 70px; height: 70px" fit="cover" />
+            <el-button type="primary" icon="el-icon-upload" @click="imageCropperShow=true">
+              选择图片
+            </el-button>
+          </div>
         </el-form-item>
         <el-form-item v-if="dialogType === 'bind-user'" label="用户名" prop="username">
           <el-input v-model="info.user_name" placeholder="请输入前台用户名" />
@@ -159,7 +161,7 @@ export default {
       status: ['冻结', '正常'],
       list: [],
       info: {},
-      roles: [],
+      roles: {},
       dialogVisible: false,
       dialogType: '',
       rules: {
@@ -239,9 +241,6 @@ export default {
     },
     handleEdit(row) {
       this.info = Object.assign({}, row) // copy obj
-      this.info.roleIds = this.info.roleIds.map(item => {
-        return String(item)
-      })
       this.dialogType = 'update'
       this.dialogVisible = true
       this.$nextTick(() => {

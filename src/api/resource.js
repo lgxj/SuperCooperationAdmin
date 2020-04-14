@@ -7,10 +7,10 @@ export const getList = (page, limit, filter) => post('resource/list', { page, li
 export const getTree = (fid, children) => post('resource/tree', { fid, children })
 
 // 添加
-export const add = ({ name, code, type, fid, remark, status, is_dev, sort, apiIds }) => post('resource/add', { name, code, type, fid, remark, status, is_dev, sort, apiIds })
+export const add = ({ name, code, type, fid, remark, status, is_dev, sort, apiIds, systemIds }) => post('resource/add', { name, code, type, fid, remark, status, is_dev, sort, apiIds, systemIds })
 
 // 编辑
-export const edit = ({ resource_id, name, code, type, fid, remark, status, is_dev, sort, apiIds }) => put('resource/edit', { resource_id, name, code, type, fid, remark, status, is_dev, sort, apiIds })
+export const edit = ({ resource_id, name, code, type, fid, remark, status, is_dev, sort, apiIds, systemIds }) => put('resource/edit', { resource_id, name, code, type, fid, remark, status, is_dev, sort, apiIds, systemIds })
 
 // 编辑依赖API
 export const editApi = ({ resource_id, apiIds }) => put('resource/edit.resource', { resource_id, apiIds })
