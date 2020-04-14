@@ -103,8 +103,9 @@ export default {
     // 重置表单信息
     resetInfo() {
       this.info = {
-        name: '',
-        sort: 0
+        system_name: '',
+        domain: '',
+        desc: ''
       }
     },
     handleAdd() {
@@ -154,10 +155,6 @@ export default {
           this.list.splice(index, 1)
         })
       })
-    },
-    handleShowApi(row) {
-      console.log(this.list)
-      this.$router.push({ name: 'PermissionApi', params: { group_id: row.api_group_id, name: this.$filters.trim(row.name) }})
     }
   }
 }
