@@ -124,6 +124,7 @@ export const asyncRoutes = [
     meta: {
       title: '权限管理',
       icon: 'lock'
+      // permissions: 'Permission'
     },
     children: [
       {
@@ -131,8 +132,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/system'),
         name: 'PermissionSystem',
         meta: {
-          title: '系统列表',
-          roles: ['dev']
+          title: '系统列表'
+          // permissions: 'PermissionSystem'
         }
       },
       {
@@ -140,8 +141,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/api-group'),
         name: 'PermissionApiGroup',
         meta: {
-          title: '接口分组',
-          roles: ['dev']
+          title: '接口分组'
+          // permissions: 'PermissionApiGroup'
         }
       },
       {
@@ -149,8 +150,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/api'),
         name: 'PermissionApiAll',
         meta: {
-          title: '接口列表',
-          roles: ['dev']
+          title: '接口列表'
+          // permissions: 'PermissionApiAll'
         }
       },
       {
@@ -159,8 +160,8 @@ export const asyncRoutes = [
         name: 'PermissionApi',
         hidden: true,
         meta: {
-          dynamicTitle: route => `接口列表：${route.params['name']}`,
-          roles: ['dev']
+          dynamicTitle: route => `接口列表：${route.params['name']}`
+          // permissions: 'PermissionApi'
         }
       },
       {
@@ -168,8 +169,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/resource'),
         name: 'PermissionResource',
         meta: {
-          title: '资源列表',
-          roles: ['dev']
+          title: '功能列表'
+          // permissions: 'PermissionResource'
         }
       },
       {
@@ -178,6 +179,7 @@ export const asyncRoutes = [
         name: 'PermissionRole',
         meta: {
           title: '角色列表'
+          // permissions: 'PermissionRole'
         }
       },
       {
@@ -186,6 +188,7 @@ export const asyncRoutes = [
         name: 'PermissionAdmin',
         meta: {
           title: '管理员列表'
+          // permissions: 'PermissionAdmin'
         }
       },
       {
@@ -194,6 +197,7 @@ export const asyncRoutes = [
         name: 'PermissionAdminLogAll',
         meta: {
           title: '操作日志'
+          // permissions: 'PermissionAdminLogAll'
         }
       },
       {
@@ -203,6 +207,7 @@ export const asyncRoutes = [
         hidden: true,
         meta: {
           dynamicTitle: route => `操作日志：${route.params['name']}`
+          // permissions: 'PermissionAdminLog'
         }
       }
     ]

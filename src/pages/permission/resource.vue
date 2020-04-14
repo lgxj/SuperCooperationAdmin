@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAdd">新建资源</el-button>
+    <el-button type="primary" @click="handleAdd">添加功能</el-button>
 
     <el-table
       ref="table"
@@ -12,7 +12,7 @@
       :load="loadChild"
       :tree-props="{children: 'children', hasChildren: 'child_count'}"
     >
-      <el-table-column align="left" label="资源名" min-width="220">
+      <el-table-column align="left" label="功能名" min-width="220">
         <template slot-scope="{row}">
           {{ row.name }}
         </template>
@@ -55,7 +55,7 @@
             placement="top"
             width="180"
           >
-            <p>您确定要删除此资源吗？</p>
+            <p>您确定要删除此功能吗？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
@@ -79,13 +79,13 @@
           />
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="info.name" placeholder="请输入资源名" />
+          <el-input v-model="info.name" placeholder="请输入功能名" />
         </el-form-item>
         <el-form-item label="编码" prop="code">
-          <el-input v-model="info.code" placeholder="请输入资源编码" />
+          <el-input v-model="info.code" placeholder="请输入功能编码" />
         </el-form-item>
         <el-form-item label="类型" prop="type">
-          <el-select v-model="info.type" placeholder="请选择资源类型" class="filter-item">
+          <el-select v-model="info.type" placeholder="请选择功能类型" class="filter-item">
             <el-option v-for="(item, index) in globalResourceType" :key="index" :label="item" :value="index" />
           </el-select>
         </el-form-item>
@@ -132,7 +132,7 @@
             v-model="info.remark"
             :autosize="{ minRows: 2, maxRows: 4}"
             type="textarea"
-            placeholder="资源说明备注"
+            placeholder="功能说明备注"
           />
         </el-form-item>
       </el-form>
@@ -173,7 +173,7 @@ export default {
         label: 'name'
       },
       rules: {
-        name: [{ required: true, message: '请输入资源名', trigger: 'change' }],
+        name: [{ required: true, message: '请输入功能名', trigger: 'change' }],
         code: [{ required: true, message: '请输入编码', trigger: 'change' }],
         type: [{ required: true, message: '请选择类型', trigger: 'change' }],
         systemIds: [{ required: true, message: '请选择所属系统', trigger: 'change' }]
@@ -188,9 +188,9 @@ export default {
     dialogTitle() {
       switch (this.dialogType) {
         case 'update':
-          return '编辑资源'
+          return '编辑功能'
         default:
-          return '添加资源'
+          return '添加功能'
       }
     }
   },

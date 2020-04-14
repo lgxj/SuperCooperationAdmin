@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column align="center" label="需要登录" min-width="100">
         <template slot-scope="{row}">
-          {{ globalYesNo[row.is_login] }}
+          {{ globalYesNo[row.need_power] }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="开发中" min-width="100">
@@ -101,9 +101,9 @@
             :inactive-value="0"
           />
         </el-form-item>
-        <el-form-item label="需要登录" prop="is_login">
+        <el-form-item label="需要登录" prop="need_power">
           <el-switch
-            v-model="info.is_login"
+            v-model="info.need_power"
             :active-value="1"
             :inactive-value="0"
           />
