@@ -6,6 +6,7 @@ import tim from '../../utils/im'
 
 const state = {
   token: getToken(),
+  sub_id: '',
   name: '',
   avatar: '',
   introduction: '',
@@ -16,6 +17,9 @@ const state = {
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_SUB_ID: (state, subId) => {
+    state.sub_id = subId
   },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
@@ -41,8 +45,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        console.log(data)
         commit('SET_TOKEN', data.token)
+        commit('SET_SUB_ID', data.sub_id)
         setToken(data.token)
         resolve()
       }).catch(error => {
