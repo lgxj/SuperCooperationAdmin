@@ -1,78 +1,68 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="search.keyword" placeholder="关键字搜索" style="width: 200px;" class="filter-item" clearable />
-      <el-select v-model="search.role_id" placeholder="角色" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="(item, index) in roles" :key="index" :label="item.name" :value="item.role_id" />
+      <el-select v-model="search.role_id" placeholder="角色" clearable style="width: 150px" class="filter-item">
+        <el-option v-for="(value, key) in roles" :key="key" :label="value" :value="key" />
       </el-select>
-      <el-select v-model="search.status" placeholder="状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="(item, index) in status" :key="index" :label="item" :value="index" />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
+      <el-button class="filter-item ml-10" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">添加</el-button>
     </div>
 
-    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border stripe>
-      <el-table-column align="center" label="ID" min-width="60">
+    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" stripe>
+      <el-table-column align="left" label="ID" min-width="60">
         <template slot-scope="{row}">
-          {{ row.admin_id }}
+          {{ row.user_id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户名" min-width="150">
+      <el-table-column align="left" label="手机号" min-width="150">
         <template slot-scope="{row}">
-          {{ row.username }}
+          {{ row.phone }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="姓名" min-width="100">
+      <el-table-column align="left" label="姓名" min-width="100">
         <template slot-scope="{row}">
-          {{ row.name }}
+          {{ row.user_name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="头像" min-width="100">
+      <el-table-column align="left" label="头像" min-width="100">
         <template slot-scope="{row}">
-          <el-image lazy :src="row.avatar" style="width: 70px; height: 70px" fit="cover" />
+          <el-image v-if="row.user_avatar" lazy :src="row.user_avatar | concatImgUrl('userListAvatar')" fit="cover" />
+          <span v-else class="form-desc-text">未设置</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="角色" min-width="120">
+      <el-table-column align="left" label="角色" min-width="120">
         <template slot-scope="{row}">
-          {{ getRoleNames(row.roleIds) }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="状态" min-width="120">
-        <template slot-scope="{row}">
-          {{ getStatusName(row.status) }}
+          <div v-for="(val, key) in getRoleNames(row)" :key="key">{{ val }}</div>
         </template>
       </el-table-column>
       <el-table-column align="center" label="最后登录" min-width="200">
         <template slot-scope="{row}">
           <div v-if="row.last_login_at">
-            时间：{{ row.last_login_at }}<br>
-            IP：{{ row.last_login_ip }}
+            IP：{{ row.last_login_ip }}<br>
+            时间：{{ row.last_login_at }}
           </div>
           <div v-else>-</div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="540">
+      <el-table-column align="right" label="操作" min-width="420">
         <template slot-scope="{row}">
           <el-button type="primary" plain size="mini" @click="handleEdit(row)">编辑</el-button>
           <el-button type="warning" plain size="mini" @click="handleResetPwd(row)">重置密码</el-button>
-          <el-button type="warning" plain size="mini" @click="handleBindUser(row)">绑定前台账号</el-button>
-          <el-button v-if="row.user_id" type="success" plain size="mini" @click="handleSendMessage(row)">发消息</el-button>
-          <el-popover
-            v-model="row.frozenPopover"
-            placement="top"
-            width="160"
-          >
-            <p v-if="row.status">您确定要冻结此管理员吗？</p>
-            <p v-else>您确定要解冻此管理员吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="hideFrozenPopover(row)">取消</el-button>
-              <el-button type="primary" size="mini" @click="handleFrozen(row)">确定</el-button>
-            </div>
-            <el-button v-if="row.status" slot="reference" type="danger" plain size="mini" class="ml-10">冻结</el-button>
-            <el-button v-else slot="reference" type="success" plain size="mini" class="ml-10">解冻</el-button>
-          </el-popover>
+          <el-button v-if="!row.is_self" type="success" plain size="mini" @click="handleSendMessage(row)">发消息</el-button>
           <el-button type="info" plain size="mini" class="ml-10" @click="handleShowLog(row)">操作日志</el-button>
+          <el-popover
+            v-if="!row.is_super && !row.is_self"
+            v-model="row.dialogVisible"
+            placement="top"
+            width="180"
+          >
+            <p>您确定要删除此员工吗？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
+              <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
+            </div>
+            <el-button slot="reference" type="danger" plain size="mini" class="ml-10">删除</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -81,43 +71,88 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" :close-on-click-modal="false">
       <el-form ref="dataForm" :rules="rules" :model="info" label-width="80px" label-position="left">
-        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="用户名" prop="username">
-          <el-input v-model="info.username" placeholder="请输入用户名" />
-        </el-form-item>
-        <el-form-item v-if="dialogType === 'reset_pwd' || dialogType === 'create'" label="密码" prop="password">
+        <el-form-item v-if="dialogType === 'reset_pwd'" label="密码" prop="password">
           <el-input v-model="info.password" type="password" placeholder="请输入密码" />
         </el-form-item>
-        <el-form-item v-if="dialogType === 'reset_pwd' || dialogType === 'create'" label="确认密码" prop="repeat_password">
+        <el-form-item v-if="dialogType === 'reset_pwd'" label="确认密码" prop="repeat_password">
           <el-input v-model="info.repeat_password" type="password" placeholder="请确认密码" />
         </el-form-item>
-        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="姓名" prop="name">
-          <el-input v-model="info.name" placeholder="请输入姓名" />
+        <el-form-item v-if="dialogType === 'update'" label="姓名" prop="user_name">
+          <el-input v-model="info.user_name" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="角色" prop="roleIds">
-          <el-select v-model="info.roleIds" multiple placeholder="请选择角色" style="width: 100%">
+        <el-form-item v-if="dialogType === 'update'" label="角色" prop="roleIds">
+          <el-select v-model="info.roleIds" multiple placeholder="请选择角色" :disabled="info.is_super" style="width: 100%">
             <el-option
               v-for="(item, index) in roles"
               :key="index"
               :label="item"
-              :value="index"
+              :value="Number(index)"
+              :disabled="Number(index) === 0"
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="dialogType === 'create' || dialogType === 'update'" label="头像" prop="name">
-          <div style="display: flex; align-items: center">
-            <el-image v-if="info.avatar" lazy :src="info.avatar" style="width: 70px; height: 70px" fit="cover" />
-            <el-button type="primary" icon="el-icon-upload" @click="imageCropperShow=true">
-              选择图片
-            </el-button>
-          </div>
-        </el-form-item>
-        <el-form-item v-if="dialogType === 'bind-user'" label="用户名" prop="username">
-          <el-input v-model="info.user_name" placeholder="请输入前台用户名" />
+        <el-form-item v-if="dialogType === 'update'" label="头像" prop="user_avatar">
+          <el-image v-if="info.avatar" lazy :src="info.avatar" style="width: 70px; height: 70px" fit="cover" />
+          <el-button type="primary" icon="el-icon-upload" @click="imageCropperShow=true">
+            选择图片
+          </el-button>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
         <el-button type="primary" @click="handleSave">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="addDialogVisible" title="添加管理员" :close-on-click-modal="false">
+      <el-form ref="dataForm" :rules="rules" :model="info" label-width="80px" label-position="left">
+        <div v-if="addStep === 1">
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model="info.phone" placeholder="请输入手机号">
+              <el-button slot="append" icon="el-icon-search" @click="handleFind" />
+            </el-input>
+          </el-form-item>
+          <el-form-item label="" style="height: 50px">
+            <el-checkbox v-if="info.user_id" v-model="info.checked" :label="info.user_name + '(' + info.username + ')'" border />
+            <span v-if="info.new">没有找到此帐号</span>
+          </el-form-item>
+        </div>
+        <div v-if="addStep === 2">
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model="info.phone" disabled></el-input>
+          </el-form-item>
+          <el-form-item v-if="info.new" label="密码" prop="password">
+            <el-input v-model="info.password" type="password" placeholder="请输入密码" />
+          </el-form-item>
+          <el-form-item v-if="info.new" label="确认密码" prop="repeat_password">
+            <el-input v-model="info.repeat_password" type="password" placeholder="请确认密码" />
+          </el-form-item>
+          <el-form-item label="姓名" prop="user_name">
+            <el-input v-model="info.user_name" placeholder="请输入姓名" />
+          </el-form-item>
+          <el-form-item label="角色" prop="roleIds">
+            <el-select v-model="info.roleIds" multiple placeholder="请选择角色" :disabled="info.is_super" style="width: 100%">
+              <el-option
+                v-for="(item, index) in roles"
+                :key="index"
+                :label="item"
+                :value="Number(index)"
+                :disabled="Number(index) === 0"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="头像" prop="user_avatar">
+            <image-pre-and-up :value="info.user_avatar" :cut="true" :width="160" :height="160" :pre-width="60" :pre-height="60" @change="handleAvatarChange"></image-pre-and-up>
+            <p class="form-desc-text">建议尺寸60*60像素</p>
+          </el-form-item>
+        </div>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button type="danger" plain @click="addDialogVisible=false">取消</el-button>
+        <el-button v-if="info.user_id && addStep === 1" type="primary" :disabled="!info.checked" @click="addStep = 2">下一步</el-button>
+        <el-button v-if="info.new && addStep === 1" type="primary" @click="addStep = 2">创建帐号</el-button>
+        <el-button v-if="addStep === 2" type="default" @click="addStep = 1">上一步</el-button>
+        <el-button v-if="addStep === 2" type="primary" @click="handleSave">确定</el-button>
       </div>
     </el-dialog>
 
@@ -135,11 +170,11 @@
 
 <script>
 import table from '@/mixins/table'
-import { validateName, validatePwd, validateUsername } from '@/utils/validate'
-import { getList, add, edit, resetPwd, frozen, unFrozen, bindUser } from '@/api/admin'
-import { getDic as getRoleDic } from '@/api/role'
-import ImageCropper from '@/components/ImageCropper'
+import { validateName, validatePwd, validateMobile } from '@/utils/validate'
+import { getList, add, edit, resetPwd, del, searchByPhone } from '@/api/admin'
+import { getDic as getRoleDic } from '@/api/permission/role'
 import { arrayReplace } from '@/utils'
+import ImageCropper from '@/components/ImageCropper'
 
 export default {
   name: 'PermissionAdmin',
@@ -164,12 +199,14 @@ export default {
       roles: {},
       dialogVisible: false,
       dialogType: '',
+      addDialogVisible: false,
+      addStep: 1,
       rules: {
-        username: [{ required: true, validator: validateUsername, trigger: 'change' }],
-        password: [{ required: true, validator: validatePwd, trigger: 'change' }],
-        repeat_password: [{ required: true, validator: validateRepeatPwd, trigger: 'change' }],
-        name: [{ required: true, validator: validateName, trigger: 'change' }],
-        roleIds: [{ required: true, message: '请选择角色', trigger: 'change' }]
+        phone: [{ required: true, validator: validateMobile, trigger: 'blur' }],
+        password: [{ required: true, validator: validatePwd, trigger: 'blur' }],
+        repeat_password: [{ required: true, validator: validateRepeatPwd, trigger: 'blur' }],
+        user_name: [{ required: true, validator: validateName, trigger: 'blur' }],
+        roleIds: [{ required: true, message: '请选择角色', trigger: 'blur' }]
       },
       imageCropperKey: 0,
       imageCropperShow: false,
@@ -200,47 +237,68 @@ export default {
       this.loadData()
     },
     loadRole() {
-      getRoleDic().then(res => {
+      getRoleDic(this.$settings.SYSTEM_MANAGE).then(res => {
         this.roles = res.data
       })
     },
     loadData() {
-      getList(this.listQuery.page, this.listQuery.limit, JSON.stringify(this.search)).then(res => {
+      getList(this.listQuery.page, this.listQuery.limit, this.search).then(res => {
         this.loadedData(res)
       })
     },
-    getRoleNames(ids) {
+    getRoleNames(item) {
       const names = []
-      ids.map(id => {
+      item.roleIds.map(id => {
         names.push(this.roles[id])
       })
-      return names.join('、') || '-'
-    },
-    getStatusName(status) {
-      return this.status[status]
+      return names
     },
     handleAdd() {
       this.resetInfo()
+      this.addStep = 1
       this.dialogType = 'create'
-      this.dialogVisible = true
+      this.addDialogVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleFind() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          searchByPhone(this.info.phone).then(res => {
+            if (this.$filters.isEmpty(res.data)) {
+              this.info.user_id = ''
+              this.info.user_name = ''
+              this.info.user_avatar = ''
+              this.info.roleIds = []
+              this.info.new = true
+            } else {
+              this.info = Object.assign(this.info, res.data)
+              this.info.new = false
+              this.info.roleIds = []
+              this.info.checked = true
+            }
+          })
+        }
       })
     },
     // 重置表单信息
     resetInfo() {
       this.info = {
-        username: '',
+        user_id: '',
+        phone: '',
         password: '',
         repeat_password: '',
-        name: '',
-        avatar: '',
+        user_name: '',
+        user_avatar: '',
         status: 1,
-        roleIds: []
+        roleIds: [],
+        new: false,
+        checked: false
       }
     },
     handleEdit(row) {
-      this.info = Object.assign({}, row) // copy obj
+      this.info = Object.assign({}, row)
       this.dialogType = 'update'
       this.dialogVisible = true
       this.$nextTick(() => {
@@ -258,57 +316,31 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    hideFrozenPopover(row) {
-      row.frozenPopover = false
-    },
-    handleBindUser(row) {
-      this.info = Object.assign({}, row) // copy obj
-      this.dialogType = 'bind-user'
-      this.dialogVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    handleDelete(row, index) {
+      del(row.user_id).then(res => {
+        this.$message.success('删除成功')
+        this.list.splice(index, 1)
       })
-    },
-    // 冻结/解冻
-    handleFrozen(row) {
-      if (row.status) {
-        frozen(row.admin_id).then(res => {
-          this.$message.success('冻结成功')
-          row.status = Math.abs(row.status - 1)
-          this.hideFrozenPopover(row)
-        })
-      } else {
-        unFrozen(row.admin_id).then(res => {
-          this.$message.success('解冻成功')
-          row.status = Math.abs(row.status - 1)
-          this.hideFrozenPopover(row)
-        })
-      }
     },
     handleSave() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogType === 'create') {
             add(this.info).then(res => {
-              this.info.admin_id = res.data.admin_id
+              this.info.user_id = res.data.user_id
               this.list.unshift(Object.assign({}, this.info))
               this.$message.success('添加成功')
-              this.dialogVisible = false
+              this.addDialogVisible = false
             })
           } else if (this.dialogType === 'update') {
             edit(this.info).then(res => {
-              this.list = arrayReplace(this.list, 'admin_id', this.info)
+              this.list = arrayReplace(this.list, 'user_id', this.info)
               this.$message.success('编辑成功')
               this.dialogVisible = false
             })
           } else if (this.dialogType === 'reset_pwd') {
             resetPwd(this.info).then(res => {
               this.$message.success('重置密码成功')
-              this.dialogVisible = false
-            })
-          } else if (this.dialogType === 'bind-user') {
-            bindUser(this.info).then(res => {
-              this.$message.success(res.message)
               this.dialogVisible = false
             })
           }
@@ -321,10 +353,13 @@ export default {
       this.info.avatar = resData.image
     },
     handleShowLog(row) {
-      this.$router.push({ name: 'PermissionAdminLog', params: { id: row.admin_id, name: this.$filters.trim(row.name) }})
+      this.$router.push({ name: 'PermissionAdminLog', params: { id: row.user_id, name: this.$filters.trim(row.user_name) }})
     },
     handleSendMessage(row) {
       this.$router.push({ name: 'MessageIM', query: { userID: 'user-' + row.user_id }})
+    },
+    handleAvatarChange(data) {
+      this.info.user_avatar = data.length ? (data[0].org_url || data[0].url) : ''
     }
   }
 }

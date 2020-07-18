@@ -1,4 +1,4 @@
-import { post, get, put } from '@/api/api'
+import { post, get, put, delRequest } from '@/api/api'
 
 // 登录
 export const login = data => post('admin/login', data)
@@ -13,22 +13,22 @@ export const logout = () => post('admin/logout')
 export const getList = (page, limit, filter) => post('admin/list', { page, limit, filter })
 
 // 添加
-export const add = ({ username, password, name, avatar, roleIds }) => post('admin/add', { username, password, name, avatar, roleIds })
+export const add = ({ phone, password, user_name, user_avatar, roleIds }) => post('admin/add', { phone, password, user_name, user_avatar, roleIds })
 
 // 编辑
-export const edit = ({ admin_id, username, name, avatar, roleIds }) => put('admin/edit', { admin_id, username, name, avatar, roleIds })
+export const edit = ({ user_id, phone, user_name, user_avatar, roleIds }) => put('admin/edit', { user_id, phone, user_name, user_avatar, roleIds })
 
 // 重置密码
-export const resetPwd = ({ admin_id, password }) => put('admin/reset_pwd', { admin_id, password })
+export const resetPwd = ({ user_id, password }) => put('admin/reset_pwd', { user_id, password })
 
-// 冻结
-export const frozen = (admin_id) => put('admin/frozen', { admin_id })
-
-// 解冻
-export const unFrozen = (admin_id) => put('admin/unFrozen', { admin_id })
+// 修改密码
+export const resetSelfPwd = ({ password_old, password }) => put('admin/reset_pwd.self', { password_old, password })
 
 // 日志列表
 export const getLogList = (page, limit, filter) => post('admin/logs', { page, limit, filter })
 
-// 绑定前台用户
-export const bindUser = ({ admin_id, user_name }) => post('admin/bindUser', { admin_id, user_name })
+// 重置密码
+export const del = (user_id) => delRequest('admin/del', { user_id })
+
+// 根据手机号查用户
+export const searchByPhone = (phone) => get('user/searchByPhone', { phone })

@@ -1,12 +1,16 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新建角色</el-button>
-    <el-button class="filter-item" type="primary" icon="el-icon-refresh-left" @click="handleSearch">刷新</el-button>
+    <el-button type="primary" @click="handleAdd">新建角色</el-button>
 
-    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" stripe>
+    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="角色名" min-width="150">
         <template slot-scope="{row}">
           {{ row.name }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="编码" min-width="150">
+        <template slot-scope="{row}">
+          {{ row.code }}
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="备注" min-width="200">
@@ -14,10 +18,10 @@
           {{ row.remark }}
         </template>
       </el-table-column>
-      <el-table-column align="right" label="操作" min-width="250">
+      <el-table-column align="center" label="操作" min-width="260">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" plain size="mini" @click="handleEdit(row, 'update')">编辑</el-button>
-          <el-button type="warning" plain size="mini" @click="handleEdit(row, 'resource')">修改权限</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(row, 'update')">编辑</el-button>
+          <el-button type="warning" size="mini" @click="handleEdit(row, 'resource')">修改权限</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
@@ -28,7 +32,7 @@
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" plain size="mini" class="ml-10">删除</el-button>
+            <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -40,6 +44,9 @@
       <el-form ref="dataForm" :model="info" :rules="rules" label-width="80px" label-position="left">
         <el-form-item v-if="dialogType !== 'resource'" label="名称" prop="name">
           <el-input v-model="info.name" placeholder="请输入角色名" />
+        </el-form-item>
+        <el-form-item v-if="dialogType !== 'resource'" label="编码" prop="code">
+          <el-input v-model="info.code" placeholder="请输入角色编码" />
         </el-form-item>
         <el-form-item v-if="dialogType !== 'resource'" label="备注" prop="remark">
           <el-input
@@ -73,22 +80,14 @@
 <script>
 import table from '@/mixins/table'
 import { arrayReplace } from '@/utils'
-import { del, add, edit, editResource, getList } from '@/api/permission/role'
-import { getTree as getResources } from '@/api/permission/resource'
+import { del, add, edit, editResource, getList } from '@/api/role'
+import { getTree as getResources } from '@/api/resource'
 
 export default {
   name: 'PermissionRole',
   mixins: [
     table
   ],
-  props: {
-    systemId: {
-      type: Number,
-      default() {
-        return this.$settings.SYSTEM_MANAGE
-      }
-    }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -129,12 +128,12 @@ export default {
       this.loadData()
     },
     loadResource() {
-      getResources(this.systemId, 0, 1).then(res => {
+      getResources(0, 1).then(res => {
         this.resources = res.data
       })
     },
     loadData() {
-      getList(this.listQuery.page, this.listQuery.limit, this.systemId).then(res => {
+      getList(this.listQuery.page, this.listQuery.limit, JSON.stringify(this.search)).then(res => {
         this.loadedData(res)
       })
     },
@@ -144,8 +143,7 @@ export default {
         name: '',
         code: '',
         remark: '',
-        resourceIds: [],
-        system_id: this.systemId
+        resourceIds: []
       }
       this.$refs.tree && this.$refs.tree.setCheckedKeys([])
     },

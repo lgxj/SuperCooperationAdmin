@@ -6,10 +6,10 @@
         <el-option v-for="(item, index) in apiGroup" :key="index" :label="item" :value="index" />
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新建接口</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">新建接口</el-button>
     </div>
 
-    <el-table v-loading="tableLoading" :data="listSort" style="width: 100%;margin-top:30px;" stripe>
+    <el-table v-loading="tableLoading" :data="listSort" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="所属分组" min-width="120">
         <template slot-scope="{row}">
           {{ apiGroup[row.group_id] || '' }}
@@ -55,9 +55,9 @@
           {{ row.remark }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="150">
+      <el-table-column align="center" label="操作" min-width="180">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" plain size="mini" @click="handleEdit(row, 'update')">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(row, 'update')">编辑</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
@@ -68,7 +68,7 @@
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" plain type="danger" size="mini" class="ml-10">删除</el-button>
+            <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -138,8 +138,8 @@
 <script>
 import table from '@/mixins/table'
 import { arrayReplace } from '@/utils'
-import { del, add, edit, getList } from '@/api/permission/api'
-import { getDic as getGroupDic } from '@/api/permission/api-group'
+import { del, add, edit, getList } from '@/api/api-back'
+import { getDic as getGroupDic } from '@/api/api-group'
 import { apiMethod, globalStatusDis, globalYesNo } from '@/utils/const'
 
 export default {
@@ -147,14 +147,6 @@ export default {
   mixins: [
     table
   ],
-  props: {
-    systemId: {
-      type: Number,
-      default() {
-        return this.$settings.SYSTEM_MANAGE
-      }
-    }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -202,13 +194,12 @@ export default {
   },
   methods: {
     init() {
-      this.search.system_id = this.systemId
       this.search.group_id = String(this.$route.params.group_id || '')
       this.loadGroup()
       this.loadData()
     },
     loadGroup() {
-      getGroupDic(this.systemId).then(res => {
+      getGroupDic().then(res => {
         this.apiGroup = res.data
       })
     },
@@ -222,14 +213,12 @@ export default {
       this.info = {
         name: '',
         path: '',
-        method: 'POST',
+        method: '',
         group_id: '',
         status: 1,
-        need_power: 1,
         is_dev: 0,
         sort: 0,
-        remark: '',
-        system_id: this.systemId
+        remark: ''
       }
     },
     handleAdd() {

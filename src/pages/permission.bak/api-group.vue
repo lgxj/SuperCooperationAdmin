@@ -1,52 +1,47 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="el-icon-plus" @click="handleAdd">添加系统</el-button>
+    <el-button type="primary" @click="handleAdd">新建分组</el-button>
 
-    <el-table :data="list" style="width: 100%;margin-top:30px;" stripe>
-      <el-table-column align="center" label="系统名" min-width="150">
+    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
+      <el-table-column align="center" label="分组名" min-width="150">
         <template slot-scope="{row}">
-          {{ row.system_name }}
+          {{ row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="域名" min-width="150">
+      <el-table-column align="center" label="排序" min-width="80">
         <template slot-scope="{row}">
-          {{ row.domain || '-' }}
+          {{ row.sort }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" min-width="80">
-        <template slot-scope="{row}">
-          {{ row.desc || '-' }}
-        </template>
-      </el-table-column>
-      <el-table-column align="right" label="操作" min-width="150">
+      <el-table-column align="center" label="操作" min-width="260">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" plain size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleShowApi(row)">接口列表</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
             width="180"
           >
-            <p>您确定要删除此系统吗？</p>
+            <p>您确定要删除此分组吗？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" plain size="mini" class="ml-10">删除</el-button>
+            <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
     </el-table>
 
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="pagination" />
+
     <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" :close-on-click-modal="false">
       <el-form ref="dataForm" :model="info" :rules="rules" label-width="80px" label-position="left">
-        <el-form-item label="名称" prop="system_name">
-          <el-input v-model="info.system_name" placeholder="请输入名称" />
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="info.name" placeholder="请输入名称" />
         </el-form-item>
-        <el-form-item label="域名" prop="domain">
-          <el-input v-model="info.domain" placeholder="请输入域名" />
-        </el-form-item>
-        <el-form-item label="备注" prop="desc">
-          <el-input v-model="info.desc" placeholder="请输入备注" />
+        <el-form-item label="排序" prop="sort">
+          <el-input v-model="info.sort" placeholder="请输入排序" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -60,10 +55,10 @@
 <script>
 import table from '@/mixins/table'
 import { arrayReplace } from '@/utils'
-import { del, add, edit, getList } from '@/api/permission/system'
+import { del, add, edit, getList } from '@/api/api-group'
 
 export default {
-  name: 'PermissionSystem',
+  name: 'PermissionApiGroup',
   mixins: [
     table
   ],
@@ -74,7 +69,8 @@ export default {
       list: [],
       info: {},
       rules: {
-        system_name: [{ required: true, message: '请输入名称', trigger: 'change' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'change' }],
+        sort: [{ required: true, message: '请输入排序', trigger: 'change' }]
       }
     }
   },
@@ -82,9 +78,9 @@ export default {
     dialogTitle() {
       switch (this.dialogType) {
         case 'update':
-          return '编辑系统'
+          return '编辑分组'
         default:
-          return '添加系统'
+          return '添加分组'
       }
     }
   },
@@ -103,9 +99,8 @@ export default {
     // 重置表单信息
     resetInfo() {
       this.info = {
-        system_name: '',
-        domain: '',
-        desc: ''
+        name: '',
+        sort: 0
       }
     },
     handleAdd() {
@@ -155,6 +150,10 @@ export default {
           this.list.splice(index, 1)
         })
       })
+    },
+    handleShowApi(row) {
+      console.log(this.list)
+      this.$router.push({ name: 'PermissionApi', params: { group_id: row.api_group_id, name: this.$filters.trim(row.name) }})
     }
   }
 }

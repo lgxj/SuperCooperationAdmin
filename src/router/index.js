@@ -123,35 +123,38 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       title: '权限管理',
-      icon: 'lock'
-      // permissions: 'Permission'
+      icon: 'lock',
+      permissions: 'Permission'
     },
     children: [
       {
         path: 'system',
         component: () => import('@/pages/permission/system'),
         name: 'PermissionSystem',
+        hidden: true,
         meta: {
-          title: '系统列表'
-          // permissions: 'PermissionSystem'
+          title: '系统列表',
+          permissions: 'PermissionSystem'
         }
       },
       {
         path: 'api-group',
         component: () => import('@/pages/permission/api-group'),
         name: 'PermissionApiGroup',
+        hidden: true,
         meta: {
-          title: '接口分组'
-          // permissions: 'PermissionApiGroup'
+          title: '接口分组',
+          permissions: 'PermissionApiGroup'
         }
       },
       {
         path: 'api',
         component: () => import('@/pages/permission/api'),
         name: 'PermissionApiAll',
+        hidden: true,
         meta: {
-          title: '接口列表'
-          // permissions: 'PermissionApiAll'
+          title: '接口列表',
+          permissions: 'PermissionApiAll'
         }
       },
       {
@@ -160,8 +163,8 @@ export const asyncRoutes = [
         name: 'PermissionApi',
         hidden: true,
         meta: {
-          dynamicTitle: route => `接口列表：${route.params['name']}`
-          // permissions: 'PermissionApi'
+          dynamicTitle: route => `接口列表：${route.params['name']}`,
+          permissions: 'PermissionApiAll'
         }
       },
       {
@@ -178,8 +181,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/role'),
         name: 'PermissionRole',
         meta: {
-          title: '角色列表'
-          // permissions: 'PermissionRole'
+          title: '角色列表',
+          permissions: 'PermissionRole'
         }
       },
       {
@@ -187,8 +190,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/admin'),
         name: 'PermissionAdmin',
         meta: {
-          title: '管理员列表'
-          // permissions: 'PermissionAdmin'
+          title: '管理员列表',
+          permissions: 'PermissionAdmin'
         }
       },
       {
@@ -196,8 +199,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/admin-log'),
         name: 'PermissionAdminLogAll',
         meta: {
-          title: '操作日志'
-          // permissions: 'PermissionAdminLogAll'
+          title: '操作日志',
+          permissions: 'PermissionAdminLogAll'
         }
       },
       {
@@ -221,7 +224,8 @@ export const asyncRoutes = [
     name: 'Content',
     meta: {
       title: '内容管理',
-      icon: 'list'
+      icon: 'list',
+      permissions: 'Content'
     },
     children: [
       {
@@ -229,7 +233,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/content/article-category'),
         name: 'ContentArticleCategory',
         meta: {
-          title: '文章分类'
+          title: '文章分类',
+          permissions: 'ContentArticleCategory'
         }
       },
       {
@@ -238,7 +243,8 @@ export const asyncRoutes = [
         name: 'ContentArticleCategoryAdd',
         hidden: true,
         meta: {
-          title: '添加文章分类'
+          title: '添加文章分类',
+          permissions: 'ContentArticleCategoryAdd'
         }
       },
       {
@@ -247,7 +253,8 @@ export const asyncRoutes = [
         name: 'ContentArticleCategoryEdit',
         hidden: true,
         meta: {
-          dynamicTitle: route => `编辑文章分类：${route.params['name']}`
+          dynamicTitle: route => `编辑文章分类：${route.params['name']}`,
+          permissions: 'ContentArticleCategoryEdit'
         }
       },
       {
@@ -255,7 +262,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/content/article'),
         name: 'ContentArticle',
         meta: {
-          title: '文章列表'
+          title: '文章列表',
+          permissions: 'ContentArticle'
         }
       },
       {
@@ -264,7 +272,8 @@ export const asyncRoutes = [
         name: 'ContentArticleAdd',
         hidden: true,
         meta: {
-          title: '添加文章'
+          title: '添加文章',
+          permissions: 'ContentArticleAdd'
         }
       },
       {
@@ -273,7 +282,8 @@ export const asyncRoutes = [
         name: 'ContentArticleEdit',
         hidden: true,
         meta: {
-          dynamicTitle: route => `编辑文章：${wordLimit(route.params['name'])}`
+          dynamicTitle: route => `编辑文章：${wordLimit(route.params['name'])}`,
+          permissions: 'ContentArticleEdit'
         }
       }
     ]

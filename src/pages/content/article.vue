@@ -6,7 +6,7 @@
         <el-option v-for="(item, index) in category" :key="index" :label="item" :value="index" />
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
+      <el-button v-permission="'ContentArticleAdd'" class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加</el-button>
     </div>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="160">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button v-permission="'ContentArticleEdit'" type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"

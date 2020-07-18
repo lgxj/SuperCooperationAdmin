@@ -1,15 +1,13 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="el-icon-plus" @click="handleAdd">添加功能分组</el-button>
-    <el-button class="filter-item" type="primary" icon="el-icon-refresh-left" @click="handleSearch">刷新</el-button>
+    <el-button type="primary" @click="handleAdd">添加功能</el-button>
 
     <el-table
       ref="table"
-      v-loading="tableLoading"
       :data="list"
       style="width: 100%;margin-top:30px;margin-bottom: 20px;"
       row-key="resource_id"
-      stripe
+      border
       lazy
       :load="loadChild"
       :tree-props="{children: 'children', hasChildren: 'child_count'}"
@@ -49,9 +47,9 @@
           {{ row.sort }}
         </template>
       </el-table-column>
-      <el-table-column align="right" label="操作" min-width="150">
+      <el-table-column align="center" label="操作" min-width="160">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" plain size="mini" @click="handleEdit(row, 'update')">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(row, 'update')">编辑</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
@@ -62,7 +60,7 @@
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" plain size="mini" class="ml-10">删除</el-button>
+            <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -70,7 +68,7 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" :close-on-click-modal="false">
       <el-form ref="dataForm" :rules="rules" :model="info" label-width="100px" label-position="left">
-        <el-form-item v-if="dialogType!=='update'" label="所属上级">
+        <el-form-item label="所属上级">
           <el-cascader
             ref="fid"
             v-model="info.fid"
@@ -87,8 +85,13 @@
           <el-input v-model="info.code" placeholder="请输入功能编码" />
         </el-form-item>
         <el-form-item label="类型" prop="type">
-          <el-select v-model.number="info.type" placeholder="请选择功能类型" class="filter-item">
-            <el-option v-for="(item, index) in globalResourceType" :key="index" :label="item" :value="Number(index)" />
+          <el-select v-model="info.type" placeholder="请选择功能类型" class="filter-item">
+            <el-option v-for="(item, index) in globalResourceType" :key="index" :label="item" :value="index" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属系统">
+          <el-select v-model="info.systemIds" multiple placeholder="请选择所属系统" filterable clearable class="w100">
+            <el-option v-for="(item, index) in systems" :key="index" :label="item" :value="index" />
           </el-select>
         </el-form-item>
         <el-form-item label="依赖API">
@@ -143,10 +146,10 @@
 
 <script>
 import table from '@/mixins/table'
-import { deepClone } from '@/utils'
-import { del, add, edit, editApi, getTree } from '@/api/permission/resource'
-import { getTree as getApiTree } from '@/api/permission/api-group'
-import { getDic as getSystemDic } from '@/api/permission/system'
+import { arrayReplace, arraySplice, deepClone } from '@/utils'
+import { del, add, edit, editApi, getTree } from '@/api/resource'
+import { getTree as getApiTree } from '@/api/api-group'
+import { getDic as getSystemDic } from '@/api/system'
 import { globalResourceType, globalStatusDis, globalYesNo } from '@/utils/const'
 
 export default {
@@ -154,14 +157,6 @@ export default {
   mixins: [
     table
   ],
-  props: {
-    systemId: {
-      type: Number,
-      default() {
-        return this.$settings.SYSTEM_MANAGE
-      }
-    }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -216,13 +211,13 @@ export default {
       this.loadData()
     },
     loadTree() {
-      getTree(this.systemId, 0, 1).then(res => {
+      getTree(0, 1).then(res => {
         this.resources = this.formatTreeData(res.data)
       })
     },
     formatTreeData(data) {
       return data.map(item => {
-        if (!item.children || !item.children.length) {
+        if (!item.children.length) {
           delete item.children
         } else {
           item.children = this.formatTreeData(item.children)
@@ -236,18 +231,17 @@ export default {
       })
     },
     loadApiTree() {
-      getApiTree(this.systemId).then(res => {
+      getApiTree().then(res => {
         this.apis = res.data
       })
     },
     loadData() {
-      getTree(this.systemId, 0, 0).then(res => {
+      getTree(0, 0).then(res => {
         this.list = this.formatData(res.data)
-        this.tableLoading = false
       })
     },
     loadChild(tree, treeNode, resolve) {
-      getTree(this.systemId, tree.resource_id, 0).then(res => {
+      getTree(tree.resource_id, 0).then(res => {
         const pid = tree.resource_id
         this.maps.set(pid, { tree, treeNode, resolve })
         resolve(this.formatData(res.data))
@@ -258,6 +252,10 @@ export default {
         item.apiIds = item.apis.map(subItem => {
           return subItem.api_id
         })
+        item.systemIds = item.systems.map(subItem => {
+          return String(subItem.system_id)
+        })
+        item.type = String(item.type)
         return item
       })
     },
@@ -267,13 +265,13 @@ export default {
         name: '',
         code: '',
         remark: '',
-        fid: 1,
-        type: 2,
+        fid: 0,
+        type: 1,
         sort: 0,
         status: 1,
         is_dev: 0,
         apiIds: [],
-        system_id: this.systemId
+        systemIds: []
       }
     },
     handleAdd() {
@@ -301,23 +299,17 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.dialogType === 'create') {
+            this.info.fid = 3
             add(this.info).then(res => {
               this.info.resource_id = res.data.resource_id
-              this.info.hasChildren = true
-              this.info.dialogVisible = false
-              this.handleAddOnSave(this.info)
+              this.addToTable()
               this.$message.success('添加成功')
               this.dialogVisible = false
-              if (!this.info.fid) {
-                this.loadTree()
-              }
             })
           } else if (this.dialogType === 'update') {
             edit(this.info).then(res => {
+              this.updateToTable()
               this.$message.success('编辑成功')
-              this.info.hasChildren = true
-              this.info.dialogVisible = false
-              this.handleEditOnSave(this.info)
               this.dialogVisible = false
             })
           } else if (this.dialogType === 'api') {
@@ -329,6 +321,43 @@ export default {
         }
       })
     },
+    addToTable() {
+      const { fid } = this.info
+      if (fid) {
+        const obj = this.maps.get(fid)
+        if (obj) {
+          this.updateTreeNode(fid)
+        }
+      } else {
+        this.list.unshift(Object.assign({}, this.info))
+      }
+      return this.loadData()
+    },
+    updateToTable() {
+      const { fid } = this.info
+      const old_fid = this.currentInfo.fid
+      if (fid) {
+        const obj = this.maps.get(fid)
+        if (obj) {
+          this.updateTreeNode(fid)
+        }
+      } else {
+        this.list = arrayReplace(this.list, 'resource_id', this.info, true)
+      }
+      if (old_fid !== fid) {
+        if (old_fid) {
+          this.updateTreeNode(old_fid)
+        } else {
+          this.list = arraySplice(this.list, 'resource_id', this.currentInfo)
+        }
+      }
+      return this.loadData()
+    },
+    updateTreeNode(fid) {
+      const { tree, treeNode, resolve } = this.maps.get(fid)
+      this.$set(this.$refs.table.store.states.lazyTreeNodeMap, fid, [])
+      this.loadChild(tree, treeNode, resolve)
+    },
     hideDialog(row) {
       row.dialogVisible = false
     },
@@ -336,117 +365,15 @@ export default {
       del(row.resource_id).then(res => {
         this.$message.success('删除成功')
         this.hideDialog(row)
-        this.deleteLazyTableItem(row)
-        this.loadTree()
+        this.$nextTick(() => {
+          const { fid } = row
+          if (fid) {
+            this.updateTreeNode(fid)
+          } else {
+            this.list.splice(index, 1)
+          }
+        })
       })
-    },
-    deleteLazyTableItem(item) {
-      const store = this.$refs.table.store
-      if (item.fid !== 0) {
-        let parentRow = store.states.data.find(child => child.resource_id === item.fid)
-        if (!parentRow) {
-          const keys = Object.keys(store.states.lazyTreeNodeMap)
-          for (let i = 0; i < keys.length; i++) {
-            parentRow = store.states.lazyTreeNodeMap[keys[i]].find(child => child.resource_id === item.fid)
-            if (parentRow) {
-              break
-            }
-          }
-        }
-        // parentRow.childrenCount--
-        const parent = store.states.lazyTreeNodeMap[item.fid]
-        const index = parent.findIndex(child => child.resource_id === item.resource_id)
-        parent.splice(index, 1)
-      } else {
-        const parent = store.states.data
-        const index = parent.findIndex(child => child.resource_id === item.resource_id)
-        parent.splice(index, 1)
-      }
-    },
-    // 编辑成功
-    handleEditOnSave(model) {
-      const newItemData = Object.assign({}, model)
-      // const parentId = this.dialogCreateOrEdit.parentId
-      // if (model.parent_category_id !== 0) {
-      // 未编辑父级节点，更新当前数据
-      if (model.fid !== 0) {
-        newItemData.hasChildren = false
-      }
-      Object.assign(this.currentInfo, newItemData)
-      // } else {
-      //   // 编辑父级节点，先删除当前节点，再去新的父级节点添加子节点
-      //   this.deleteLazyTableItem(this.editItem)
-      //   if (model.parent === -1) {
-      //     // 添加最外层
-      //     this.addOuterTableItem(newItemData)
-      //   } else {
-      //     this.findNewParent(model.parent, newItemData)
-      //   }
-      // }
-    },
-    // 新增成功
-    handleAddOnSave(model) {
-      const newItemData = Object.assign({}, model)
-      const parentId = model.fid
-      const store = this.$refs.table.store
-      if (parentId === 0) {
-        // 添加最外层
-        this.addOuterTableItem(newItemData)
-      } else {
-        // const parentRow = this.currentRow
-        // parentRow.childrenCount++
-        // treeData为所有已加载过的节点的子节点
-        const parentTreeNode = store.states.treeData[parentId]
-        this.addLazyTableItemToParent(parentTreeNode, parentId, newItemData)
-      }
-    },
-    // 添加数据放到最外层的数据中去
-    addOuterTableItem(newItemData) {
-      const store = this.$refs.table.store
-      store.states.data.push(newItemData)
-    },
-    // 把数据加到父级节点上去
-    addLazyTableItemToParent(parentTreeNode, parentId, newItemData) {
-      const store = this.$refs.table.store
-      // 如果在已加载过的节点的子节点中
-      if (parentTreeNode) {
-        // 如果该节点已加载
-        if (parentTreeNode.loaded) {
-          // 子节点不需要加载下一级功能
-          // newItemData.hasChildren = false
-          newItemData.levelTwo = true
-          if (!store.states.lazyTreeNodeMap[parentId]) {
-            // store.states.lazyTreeNodeMap[parentId] = []
-            this.$set(store.states.lazyTreeNodeMap, parentId, [])
-            this.$set(store.states.treeData, parentId, {
-              display: true,
-              loading: false,
-              loaded: false,
-              expanded: false,
-              children: [],
-              lazy: true,
-              level: 0,
-              hasChildren: true,
-              levelTwo: true
-            })
-          }
-          store.states.lazyTreeNodeMap[parentId].push(newItemData)
-        }
-      } else {
-        this.$set(store.states.lazyTreeNodeMap, parentId, [])
-        store.states.treeData[parentId] = {
-          display: true,
-          loading: false,
-          loaded: false,
-          expanded: false,
-          children: [],
-          lazy: true,
-          level: 0,
-          hasChildren: true,
-          levelTwo: true
-        }
-        store.states.lazyTreeNodeMap[parentId].push(newItemData)
-      }
     }
   }
 }

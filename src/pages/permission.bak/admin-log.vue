@@ -16,7 +16,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
     </div>
 
-    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" stripe>
+    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="用户" min-width="150">
         <template slot-scope="{row}">
           {{ row.admin.name }} ({{ row.admin.username }})

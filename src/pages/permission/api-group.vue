@@ -1,9 +1,15 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAdd">新建分组</el-button>
+    <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新建分组</el-button>
+    <el-button class="filter-item" type="primary" icon="el-icon-refresh-left" @click="handleSearch">刷新</el-button>
 
-    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="分组名" min-width="150">
+    <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" stripe>
+      <el-table-column align="center" label="ID" min-width="80">
+        <template slot-scope="{row}">
+          {{ row.api_group_id }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="分组名" min-width="200">
         <template slot-scope="{row}">
           {{ row.name }}
         </template>
@@ -13,10 +19,10 @@
           {{ row.sort }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="260">
+      <el-table-column align="right" label="操作" min-width="260">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="primary" size="mini" @click="handleShowApi(row)">接口列表</el-button>
+          <el-button type="primary" plain size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="primary" plain size="mini" @click="handleShowApi(row)">接口列表</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
@@ -27,7 +33,7 @@
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
+            <el-button slot="reference" plain type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -55,13 +61,21 @@
 <script>
 import table from '@/mixins/table'
 import { arrayReplace } from '@/utils'
-import { del, add, edit, getList } from '@/api/api-group'
+import { del, add, edit, getList } from '@/api/permission/api-group'
 
 export default {
   name: 'PermissionApiGroup',
   mixins: [
     table
   ],
+  props: {
+    systemId: {
+      type: Number,
+      default() {
+        return this.$settings.SYSTEM_MANAGE
+      }
+    }
+  },
   data() {
     return {
       dialogVisible: false,
@@ -92,7 +106,7 @@ export default {
       this.loadData()
     },
     loadData() {
-      getList(this.listQuery.page, this.listQuery.limit, JSON.stringify(this.search)).then(res => {
+      getList(this.listQuery.page, this.listQuery.limit, this.systemId).then(res => {
         this.loadedData(res)
       })
     },
@@ -100,7 +114,8 @@ export default {
     resetInfo() {
       this.info = {
         name: '',
-        sort: 0
+        sort: 0,
+        system_id: this.systemId
       }
     },
     handleAdd() {
@@ -152,7 +167,6 @@ export default {
       })
     },
     handleShowApi(row) {
-      console.log(this.list)
       this.$router.push({ name: 'PermissionApi', params: { group_id: row.api_group_id, name: this.$filters.trim(row.name) }})
     }
   }

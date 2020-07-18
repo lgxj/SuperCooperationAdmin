@@ -27,9 +27,9 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['SC-ACCESS-TOKEN'] = store.getters.token
+      config.headers['SC-ACCESS-TOKEN'] = store.getters.token || ''
 
-      config.headers[ 'SC-SUB-ID'] = store.getters.sub_id
+      config.headers[ 'SC-SUB-ID'] = store.getters.sub_id || ''
     }
     return config
   },

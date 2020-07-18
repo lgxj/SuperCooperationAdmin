@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAdd">新建分类</el-button>
+    <el-button v-permission="'ContentArticleCategoryAdd'" type="primary" @click="handleAdd">新建分类</el-button>
     <el-button type="primary ml-10" icon="el-icon-refresh" @click="handleRefresh">刷新</el-button>
 
     <el-table v-loading="tableLoading" :data="list" style="width: 100%;margin-top:30px;" border>
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="260">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button v-permission="'ContentArticleCategoryEdit'" type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"

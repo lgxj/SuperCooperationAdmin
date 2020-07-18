@@ -5,18 +5,25 @@ export default {
     const { value } = binding
     const permissions = store.getters && store.getters.permissions
 
-    if (value && value instanceof Array && value.length > 0) {
-      const permissionRoles = value
+    if (value) {
+      if (value instanceof Array) {
+        const permissionRoles = value
 
-      const hasPermission = permissions.some(permission => {
-        return permissionRoles.includes(permission)
-      })
+        const hasPermission = permissions.some(permission => {
+          return permissionRoles.includes(permission)
+        })
 
-      if (!hasPermission) {
-        el.parentNode && el.parentNode.removeChild(el)
+        if (!hasPermission) {
+          el.parentNode && el.parentNode.removeChild(el)
+        }
+      } else {
+        console.log(value, permissions.includes(value))
+        if (!permissions.includes(value)) {
+          el.parentNode && el.parentNode.removeChild(el)
+        }
       }
     } else {
-      throw new Error(`need permission! Like v-permission="['add','edit']"`)
+      throw new Error(`need permission! Like v-permission="['add','edit']" or v-permission="'add'"`)
     }
   }
 }

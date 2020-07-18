@@ -134,7 +134,7 @@
           <div slot="header" class="clearfix">
             <span>报价列表</span>
           </div>
-          <div v-if="info.quoted_list" class="list">
+          <div v-if="!$filters.isEmpty(info.quoted_list)" class="list">
             <div v-for="(item, index) in info.quoted_list" :key="index" class="item">
               <div class="label">{{ item.quoted_price }}元</div>
               <div class="content">{{ item.user_name }}({{ item.helper_level }}星)</div>
@@ -389,7 +389,7 @@ export default {
       if (this.isGeneralTask) {
         return '暂无帮手接单'
       } else if (this.isCompetitionTask) {
-        return this.info.bidding_list.length ? '还未选择报价帮手' : '暂无帮手报价'
+        return (this.info.bidding_list && this.info.bidding_list.length) ? '还未选择报价帮手' : '暂无帮手报价'
       } else {
         return ''
       }

@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="el-icon-plus" @click="handleAdd">添加系统</el-button>
+    <el-button type="primary" @click="handleAdd">添加系统</el-button>
 
-    <el-table :data="list" style="width: 100%;margin-top:30px;" stripe>
+    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="系统名" min-width="150">
         <template slot-scope="{row}">
           {{ row.system_name }}
@@ -18,9 +18,9 @@
           {{ row.desc || '-' }}
         </template>
       </el-table-column>
-      <el-table-column align="right" label="操作" min-width="150">
+      <el-table-column align="center" label="操作" min-width="260">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" plain size="mini" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
           <el-popover
             v-model="row.dialogVisible"
             placement="top"
@@ -31,7 +31,7 @@
               <el-button size="mini" type="text" @click="hideDialog(row)">取消</el-button>
               <el-button type="primary" size="mini" @click="handleDelete(row, $index)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" plain size="mini" class="ml-10">删除</el-button>
+            <el-button slot="reference" type="danger" size="mini" class="ml-10">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -60,7 +60,7 @@
 <script>
 import table from '@/mixins/table'
 import { arrayReplace } from '@/utils'
-import { del, add, edit, getList } from '@/api/permission/system'
+import { del, add, edit, getList } from '@/api/system'
 
 export default {
   name: 'PermissionSystem',

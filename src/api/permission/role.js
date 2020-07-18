@@ -1,13 +1,13 @@
 import { post, put, get, delRequest } from '@/api/api'
 
 // 列表
-export const getList = (page, limit, filter) => post('role/list', { page, limit, filter })
+export const getList = (page, limit, system_id) => post('role/list', { page, limit, system_id })
 
 // 字典
-export const getDic = () => get('role/dic')
+export const getDic = (system_id) => get('role/dic', { system_id })
 
 // 添加
-export const add = ({ name, code, remark, resourceIds }) => post('role/add', { name, code, remark, resourceIds })
+export const add = ({ system_id, name, code, remark, resourceIds }) => post('role/add', { system_id, name, code, remark, resourceIds })
 
 // 编辑
 export const edit = ({ role_id, name, code, remark }) => put('role/edit', { role_id, name, code, remark })

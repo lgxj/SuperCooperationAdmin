@@ -13,7 +13,7 @@ function hasPermission(roles, permissions, route) {
     } else if (route.meta.roles) {
       return roles.some(role => route.meta.roles.includes(role))
     } else if (route.meta.permissions) {
-      return permissions.some(permission => route.meta.permissions.includes(permission))
+      return permissions.includes(route.meta.permissions)
     } else {
       return true
     }
