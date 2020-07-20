@@ -172,8 +172,8 @@ export const asyncRoutes = [
         component: () => import('@/pages/permission/resource'),
         name: 'PermissionResource',
         meta: {
-          title: '功能列表'
-          // permissions: 'PermissionResource'
+          title: '功能列表',
+          permissions: 'PermissionResource'
         }
       },
       {
@@ -209,8 +209,8 @@ export const asyncRoutes = [
         name: 'PermissionAdminLog',
         hidden: true,
         meta: {
-          dynamicTitle: route => `操作日志：${route.params['name']}`
-          // permissions: 'PermissionAdminLog'
+          dynamicTitle: route => `操作日志：${route.params['name']}`,
+          permissions: 'PermissionAdminLogAll'
         }
       }
     ]

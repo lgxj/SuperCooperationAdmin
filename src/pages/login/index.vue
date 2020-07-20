@@ -46,6 +46,8 @@
       </el-tooltip>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+
+      <p style="font-size: 12px; color: #CCCCCC">体验帐号：admin / 123456</p>
     </el-form>
   </div>
 </template>
