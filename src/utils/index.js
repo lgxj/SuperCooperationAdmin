@@ -22,6 +22,16 @@ export const getImgFullPath = path => {
 }
 
 /**
+ * 判断是否为空
+ */
+export const isEmpty = (data) => {
+  if (!data) return true
+  if (data === '0' || data === 'null' || data === 'undefined') return true
+  if (JSON.stringify(data) === '{}' || JSON.stringify(data) === '[]') return true
+  return false
+}
+
+/**
  * 拼接签名字符串
  * @param params
  * @returns {string}
@@ -31,6 +41,7 @@ export const makeParamSource = params => {
   const arr = []
   keys.forEach(val => {
     let param = params[val]
+    if (isEmpty(param)) return
     if (typeof param === 'object') {
       param = JSON.stringify(param)
     }
